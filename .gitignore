@@ -1,0 +1,9 @@
+*.log
+
+*.backup
+
+*.sqlite
+
+*.stats
+
+Model_ModelViewInfo.xml

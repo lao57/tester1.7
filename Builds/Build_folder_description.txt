@@ -1,0 +1,1 @@
+This is a folder that can be used to save builds and is tracked by Git. You can 'save as' projects as spfx into this folder with different names and they will be saved alongside the rest of the repository remotely.
