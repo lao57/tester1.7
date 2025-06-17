@@ -1,0 +1,85 @@
+<Fragment>
+  <Process Name="OnRunInitialized" IsOverride="True" ShowAsUserExecutableProcess="False" InterfaceProcessID="Object.OnRunInitialized" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Subscribe" Name="ToStopEvent" ExclusionExpression="!StopEventName.HasValue" ID="2">
+        <Properties>
+          <Property Name="EventName">StopEventName</Property>
+          <Property Name="ProcessName">
+            <Value>OnStopEventOccurred</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Execute" Name="RunInitializedAddOnProcess" ID="3">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>RunInitializedAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Decide" Name="IfCreatingInitialEntities" ExclusionExpression="Math.If(ArrivalMode == Enum.TimerIntervalType.EventCount, 1, 2)" ID="4">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ArrivalMode == Enum.TimerIntervalType.EventCount</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="AddRow" Name="BeforeCreatingEntities" ID="5">
+        <Properties>
+          <Property Name="ObjectType">Token</Property>
+          <Property Name="TableName">TableRowReferenceBeforeCreatingEntitiesTableName</Property>
+          <Property Name="AddRowCondition">TableRowReferenceBeforeCreatingEntitiesActionType == Enum.TableRowReferenceActionType.AddNewRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="SetRow" Name="BeforeCreatingEntities" ID="6">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceBeforeCreatingEntitiesTableName</Property>
+          <Property Name="RowNumber">TableRowReferenceBeforeCreatingEntitiesRowNumber</Property>
+          <Property Name="ObjectType">Token</Property>
+          <Property Name="SetRowCondition">TableRowReferenceBeforeCreatingEntitiesActionType == Enum.TableRowReferenceActionType.ReferenceExistingRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Execute" Name="CreatingEntitiesAddOnProcess" ID="7">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>CreatingEntitiesAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="8" />
+      </Step>
+      <Step Type="Create" Name="Entities" ID="8">
+        <Properties>
+          <Property Name="EntityType">EntityType</Property>
+          <Property Name="NumberToCreate">InitialNumberEntities</Property>
+          <Property Name="StockRequirements">
+            <Value>StockRequirements</Value>
+            <Rows>
+              <Properties>
+                <Property Name="StockRequirementIDNumber">StockRequirementIDNumber</Property>
+                <Property Name="StockRequirementMaterialName">
+                  <Value>StockRequirementMaterialName</Value>
+                </Property>
+                <Property Name="StockRequirementQuantity">StockRequirementQuantity</Property>
+                <Property Name="SkipStockRequirementCondition">SkipStockRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Created" Type="Alternate" NextID="9" />
+      </Step>
+      <Step Type="Transfer" Name="ToProcessing" ID="9">
+        <Properties>
+          <Property Name="ToType">Station</Property>
+          <Property Name="StationName">
+            <Value>Processing</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- uQ/NhRTpum7EluyUCA5jaM88LPIRMA4GK9nOPgTO5Zl8ohjk9JGSfgl8X8GOjXOHag1r2lpjby64nGx7EbdUjg== -->

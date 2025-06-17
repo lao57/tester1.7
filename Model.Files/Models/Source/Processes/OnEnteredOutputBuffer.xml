@@ -1,0 +1,37 @@
+<Fragment>
+  <Process Name="OnEnteredOutputBuffer" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">OutputBuffer.Entered</Property>
+    </Properties>
+    <Steps>
+      <Step Type="EndTransfer" Name="IntoOutputBuffer" ID="2">
+        <Properties />
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Assign" Name="BeforeExitingAssignments" ID="3">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsBeforeExiting</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsBeforeExitingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsBeforeExitingNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Transfer" Name="ToOutputNode" ID="4">
+        <Properties>
+          <Property Name="FromType">CurrentStation</Property>
+          <Property Name="ToType">ParentExternalNode</Property>
+          <Property Name="ExternalNodeName">Output</Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- y427Qy+lhy2jSJYSdzklwNjRa8ePjleyjFqU0tqlrV19CHVug1Y1Qf7UqG9JVpfJ5222NrC67Ua6LkFLK8g+gw== -->

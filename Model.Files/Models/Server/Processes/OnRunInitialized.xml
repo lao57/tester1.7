@@ -1,0 +1,113 @@
+<Fragment>
+  <Process Name="OnRunInitialized" IsOverride="True" ShowAsUserExecutableProcess="False" InterfaceProcessID="Object.OnRunInitialized" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="ToEnableFailures" ExclusionExpression="FailureType==List.ServerFailureType.NoFailures" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>CalendarTimeBasedFailures.Enabled</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Run.RandomnessDisabled==False</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">FailureType!=List.ServerFailureType.CalendarTimeBased</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingCountBasedFailures.Enabled</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Run.RandomnessDisabled==False</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">FailureType!=List.ServerFailureType.ProcessingCountBased</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>EventCountBasedFailures.Enabled</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Run.RandomnessDisabled==False</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">FailureType!=List.ServerFailureType.EventCountBased</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingTimeBasedFailures.Enabled</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Run.RandomnessDisabled==False</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">FailureType!=List.ServerFailureType.ProcessingTimeBased</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Subscribe" Name="ToFailureEvents" ExclusionExpression="FailureType==List.ServerFailureType.NoFailures" ID="3">
+        <Properties>
+          <Property Name="EventName">CalendarTimeBasedFailures.Event</Property>
+          <Property Name="ProcessName">
+            <Value>FailureOccurrenceLogic</Value>
+          </Property>
+          <Property Name="Events">
+            <Rows>
+              <Properties>
+                <Property Name="EventsEventName">ProcessingCountBasedFailures.Event</Property>
+                <Property Name="EventsProcessName">
+                  <Value>FailureOccurrenceLogic</Value>
+                </Property>
+              </Properties>
+              <Properties>
+                <Property Name="EventsEventName">EventCountBasedFailures.Event</Property>
+                <Property Name="EventsProcessName">
+                  <Value>FailureOccurrenceLogic</Value>
+                </Property>
+              </Properties>
+              <Properties>
+                <Property Name="EventsEventName">ProcessingTimeBasedFailures.Event</Property>
+                <Property Name="EventsProcessName">
+                  <Value>FailureOccurrenceLogic</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Execute" Name="RunInitializedAddOnProcess" ID="4">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>RunInitializedAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Decide" Name="IfOnShift" ExclusionExpression="Math.If(OnShiftAddOnProcess.HasValue, 0, 2)" ID="5">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ResourceState!=List.ResourceStateName.OffShift</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="8" />
+        <Exit Name="False" Type="Alternate" NextID="6" />
+      </Step>
+      <Step Type="Decide" Name="IfOffShift" ExclusionExpression="Math.If(OffShiftAddOnProcess.HasValue, 0, 2)" ID="6">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ResourceState==List.ResourceStateName.OffShift</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Execute" Name="OffShiftAddOnProcess" ID="7">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OffShiftAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+      <Step Type="Execute" Name="OnShiftAddOnProcess" ID="8">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnShiftAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- wKNKXlHYj9dnNbPsWUow2s3CzSo34/+Mi73BLiGjobpYrXHaknCwSGs0g+jq5AevBY2jU0O7PW9jds97U1rcHw== -->

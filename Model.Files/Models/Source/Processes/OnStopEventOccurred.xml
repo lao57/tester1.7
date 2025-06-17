@@ -1,0 +1,16 @@
+<Fragment>
+  <Process Name="OnStopEventOccurred" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="ToDisableEntityArrivals" ID="2">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>EntityArrivals.Enabled</Value>
+          </Property>
+          <Property Name="NewValue">False</Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- CgScaFA8mWuGTccesnNTJt70CHF1w6Z2Li3HeGfCOYq0Vc4N4d1VA2yWgj3xxKaxVwZ8MSkr7dAOBJ5B5E4Sig== -->

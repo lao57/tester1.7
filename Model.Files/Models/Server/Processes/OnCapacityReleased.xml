@@ -1,0 +1,16 @@
+<Fragment>
+  <Process Name="OnCapacityReleased" IsOverride="True" ShowAsUserExecutableProcess="False" InterfaceProcessID="Object.OnCapacityReleased" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="ResourceState" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.SuspendProcessing" ID="2">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ResourceState</Value>
+          </Property>
+          <Property Name="NewValue">Math.If((Capacity==0)&amp;&amp;(ResourceOwners==0), List.ResourceStateName.OffShift, ResourceState)</Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- /0w6gHBtpGqwSl+pNAEPbCXDYe3J0Hs7Nu9CvCFftLQJz36jLhFQrjhJoh+5j6b6yLIgWjl5pQvGPWyLKGfS/g== -->

@@ -1,0 +1,294 @@
+<Fragment>
+  <Process Name="OnEnteredInputBuffer" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">InputBuffer.Entered</Property>
+      <Property Name="TokenActionOnAssociatedObjectDestroyed">EndProcess</Property>
+      <Property Name="TokenActionOnAssociatedObjectTransferRequested">EndProcess</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Assign" Name="OnEnteringAssignments" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsOnEntering</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsOnEnteringStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsOnEnteringNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Seize" Name="SecondaryResources" ID="3">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Value>SecondaryResourceSeizesOnEntering</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceSeizesOnEnteringResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceSeizesOnEnteringResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceSeizesOnEnteringResourceListName</Property>
+                <Property Name="NumberOfResources">SecondaryResourceSeizesOnEnteringNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceSeizesOnEnteringUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourceSeizesOnEnteringSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourceSeizesOnEnteringSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourceSeizesOnEnteringSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourceSeizesOnEnteringResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourceSeizesOnEnteringRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourceSeizesOnEnteringDestinationNode</Property>
+                <Property Name="MovePriority">SecondaryResourceSeizesOnEnteringMovePriority</Property>
+                <Property Name="OnSeizedProcess">
+                  <Value>SecondaryResourceSeizesOnEnteringOnSeizedProcess</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourceSeizesOnEnteringSkipSeizeCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourceSeizesOnEnteringMustSimultaneouslySeize</Property>
+          <Property Name="ImmediatelyTrySeize">SecondaryResourceSeizesOnEnteringImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Release" Name="SecondaryResources" ID="4">
+        <Properties>
+          <Property Name="ResourceReleases">
+            <Value>SecondaryResourceReleasesOnEntering</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceReleasesOnEnteringResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceReleasesOnEnteringResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceReleasesOnEnteringResourceListName</Property>
+                <Property Name="QuantityType">SecondaryResourceReleasesOnEnteringQuantityType</Property>
+                <Property Name="NumberOfResources">SecondaryResourceReleasesOnEnteringNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceReleasesOnEnteringUnitsPerResource</Property>
+                <Property Name="ReleaseOrder">SecondaryResourceReleasesOnEnteringReleaseOrder</Property>
+                <Property Name="SelectionCondition">SecondaryResourceReleasesOnEnteringSelectionCondition</Property>
+                <Property Name="KeepReservedCondition">SecondaryResourceReleasesOnEnteringKeepReservedCondition</Property>
+                <Property Name="ReservationTimeout">SecondaryResourceReleasesOnEnteringReservationTimeout</Property>
+                <Property Name="OnReleasedProcess">
+                  <Value>SecondaryResourceReleasesOnEnteringOnReleasedProcess</Value>
+                </Property>
+                <Property Name="SkipReleaseCondition">SecondaryResourceReleasesOnEnteringSkipReleaseCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTryAllocate">SecondaryResourceReleasesOnEnteringImmediatelyTryAllocateWhenReleased</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Execute" Name="EnteredAddOnProcess" ID="5">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>EnteredAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Delay" Name="TransferInTime" ID="6">
+        <Properties>
+          <Property Name="DelayTime">TransferInTime</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="EndTransfer" Name="IntoInputBuffer" ID="7">
+        <Properties />
+        <Exit Name="Exit" Type="Primary" NextID="8" />
+      </Step>
+      <Step Type="Seize" Name="Server" ID="8">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ParentObject</Property>
+                <Property Name="SelectionGoal"></Property>
+                <Property Name="SelectionValueExpression"></Property>
+                <Property Name="PerUseCostAccrualMethod">AtNextStation</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="SeizeConstraintLogic">
+            <Value>SeizeConstraintLogic</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ConstraintLogicName">
+                  <Value>SeizeConstraintLogic.SeizeConstraintLogicName</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTrySeize">ImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="9" />
+      </Step>
+      <Step Type="Seize" Name="SecondaryResources" ExclusionExpression="SecondaryResourcesForProcessingIsRepeatGroup==True" ID="9">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceForProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceForProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceForProcessingResourceListName</Property>
+                <Property Name="NumberOfResources">SecondaryResourceForProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceForProcessingUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourceForProcessingSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourceForProcessingSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourceForProcessingSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourceForProcessingResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourceForProcessingRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourceForProcessingDestinationNode</Property>
+                <Property Name="PerUseCostAccrualMethod">AtNextStation</Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourceForProcessingSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourcesForProcessingMustSimultaneouslySeize</Property>
+          <Property Name="ImmediatelyTrySeize">SecondaryResourcesForProcessingImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="10" />
+      </Step>
+      <Step Type="Seize" Name="SecondaryResources" ExclusionExpression="SecondaryResourcesForProcessingIsRepeatGroup==False" ID="10">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Value>SecondaryResourcesForProcessing</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourcesForProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourcesForProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourcesForProcessingResourceListName</Property>
+                <Property Name="NumberOfResources">SecondaryResourcesForProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourcesForProcessingUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourcesForProcessingSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourcesForProcessingSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourcesForProcessingSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourcesForProcessingResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourcesForProcessingRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourcesForProcessingDestinationNode</Property>
+                <Property Name="PerUseCostAccrualMethod">AtNextStation</Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourcesForProcessingSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourcesForProcessingMustSimultaneouslySeize</Property>
+          <Property Name="ImmediatelyTrySeize">SecondaryResourcesForProcessingImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="11" />
+      </Step>
+      <Step Type="Seize" Name="SecondaryResources" ID="11">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Value>SecondaryResourceSeizesBeforeProcessing</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceSeizesBeforeProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceSeizesBeforeProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceSeizesBeforeProcessingResourceListName</Property>
+                <Property Name="NumberOfResources">SecondaryResourceSeizesBeforeProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceSeizesBeforeProcessingUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourceSeizesBeforeProcessingSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourceSeizesBeforeProcessingSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourceSeizesBeforeProcessingSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourceSeizesBeforeProcessingResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourceSeizesBeforeProcessingRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourceSeizesBeforeProcessingDestinationNode</Property>
+                <Property Name="MovePriority">SecondaryResourceSeizesBeforeProcessingMovePriority</Property>
+                <Property Name="PerUseCostAccrualMethod">AtNextStation</Property>
+                <Property Name="OnSeizedProcess">
+                  <Value>SecondaryResourceSeizesBeforeProcessingOnSeizedProcess</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourceSeizesBeforeProcessingSkipSeizeCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourceSeizesBeforeProcessingMustSimultaneouslySeize</Property>
+          <Property Name="ImmediatelyTrySeize">SecondaryResourceSeizesBeforeProcessingImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="12" />
+      </Step>
+      <Step Type="Release" Name="SecondaryResources" ID="12">
+        <Properties>
+          <Property Name="ResourceReleases">
+            <Value>SecondaryResourceReleasesBeforeProcessing</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceReleasesBeforeProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceReleasesBeforeProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceReleasesBeforeProcessingResourceListName</Property>
+                <Property Name="QuantityType">SecondaryResourceReleasesBeforeProcessingQuantityType</Property>
+                <Property Name="NumberOfResources">SecondaryResourceReleasesBeforeProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceReleasesBeforeProcessingUnitsPerResource</Property>
+                <Property Name="ReleaseOrder">SecondaryResourceReleasesBeforeProcessingReleaseOrder</Property>
+                <Property Name="SelectionCondition">SecondaryResourceReleasesBeforeProcessingSelectionCondition</Property>
+                <Property Name="KeepReservedCondition">SecondaryResourceReleasesBeforeProcessingKeepReservedCondition</Property>
+                <Property Name="ReservationTimeout">SecondaryResourceReleasesBeforeProcessingReservationTimeout</Property>
+                <Property Name="OnReleasedProcess">
+                  <Value>SecondaryResourceReleasesBeforeProcessingOnReleasedProcess</Value>
+                </Property>
+                <Property Name="SkipReleaseCondition">SecondaryResourceReleasesBeforeProcessingSkipReleaseCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTryAllocate">SecondaryResourceReleasesBeforeProcessingImmediatelyTryAllocateWhenReleased</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="13" />
+      </Step>
+      <Step Type="AddRow" Name="BeforeProcessing" ID="13">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceBeforeProcessingTableName</Property>
+          <Property Name="AddRowCondition">TableRowReferenceBeforeProcessingActionType == Enum.TableRowReferenceActionType.AddNewRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="14" />
+      </Step>
+      <Step Type="SetRow" Name="BeforeProcessing" ID="14">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceBeforeProcessingTableName</Property>
+          <Property Name="RowNumber">TableRowReferenceBeforeProcessingRowNumber</Property>
+          <Property Name="SetRowCondition">TableRowReferenceBeforeProcessingActionType == Enum.TableRowReferenceActionType.ReferenceExistingRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="15" />
+      </Step>
+      <Step Type="Assign" Name="BeforeProcessingAssignments" ID="15">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsBeforeProcessing</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsBeforeProcessingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsBeforeProcessingNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="16" />
+      </Step>
+      <Step Type="Execute" Name="BeforeProcessingAddOnProcess" ID="16">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>BeforeProcessingAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="17" />
+      </Step>
+      <Step Type="Transfer" Name="ToProcessing" ID="17">
+        <Properties>
+          <Property Name="FromType">CurrentStation</Property>
+          <Property Name="ToType">Station</Property>
+          <Property Name="StationName">
+            <Value>Processing</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- lwOoV0+mMhowHWVx1SDNJFazeFPiBtNcEBp/gw23u3JwW+mSRvr02yKjZTdgQO8524229fPE6ZLxmnGPvHReFw== -->

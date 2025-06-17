@@ -1,0 +1,66 @@
+<Fragment>
+  <Process Name="OnRepaired" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Resume" Name="Processing" ID="2">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnEnteredProcessing</Value>
+          </Property>
+          <Property Name="ResumeActions">
+            <Rows>
+              <Properties>
+                <Property Name="ResumeActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Assign" Name="ResourceState" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.SuspendProcessing" ID="3">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ResourceState</Value>
+          </Property>
+          <Property Name="NewValue">Math.If((Capacity==0)&amp;&amp;(ResourceOwners&gt;Processing.NumberTransferringOut)&amp;&amp;(!HasActiveChangeover), List.ResourceStateName.OffShiftProcessing, (Capacity==0)&amp;&amp;(HasActiveChangeover), List.ResourceStateName.OffShiftSetup, ResourceState)</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Assign" Name="OnRepairedAssignments" ID="4">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>OnEvaluatingSeizeRequest.Enabled</Value>
+          </Property>
+          <Property Name="NewValue">True</Property>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OnEvaluatingSeizeRequest.ReturnValue</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">True</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Fire" Name="RepairedEvent" ID="5">
+        <Properties>
+          <Property Name="EventName">Repaired</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Execute" Name="RepairedAddOnProcess" ID="6">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>RepairedAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- mHduskCR1Eb07Q4EuVI6eDnY3dRz9u0B0t43AWqaqVR9zhENVue3oAzHRlCMYQTpKbSmnK9TMdUsBPSElbs9cg== -->

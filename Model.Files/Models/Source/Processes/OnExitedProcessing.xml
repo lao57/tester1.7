@@ -1,0 +1,17 @@
+<Fragment>
+  <Process Name="OnExitedProcessing" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">Processing.Exited</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Execute" Name="ExitedAddOnProcess" ExclusionExpression="OutputBufferCapacity&gt;0" ID="2">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ExitedAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- 7rKN066WQJBjbznUIAzlHY2vmI7VVjevPIqimGDqkWe5lGEPGc+G60sQLCnzJOlftkaWwuO0URlnK9m0WD0UbQ== -->

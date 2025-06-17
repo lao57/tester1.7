@@ -1,0 +1,56 @@
+<Fragment>
+  <Process Name="OnRenegedFromOutputBuffer" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="OnRenegingAssignments" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsOnReneging</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsOnRenegingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsOnRenegingNewValue</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">Math.If(AssignmentsOnReneging.AssignmentsOnRenegingAssignConditionType==List.OnRenegingAssignConditionType.CustomCondition, AssignmentsOnReneging.AssignmentsOnRenegingAssignCondition&lt;=0.0, AssignmentsOnReneging.AssignmentsOnRenegingAssignConditionType!=List.OnRenegingAssignConditionType.RenegingFromOutputBuffer)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Decide" Name="IfDestroyEntity" ID="3">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">!OutputBufferRenegeTriggers.OutputBufferRenegeNodeName.HasValue</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="7" />
+        <Exit Name="False" Type="Alternate" NextID="4" />
+      </Step>
+      <Step Type="Transfer" Name="ToFreeSpace" ID="4">
+        <Properties>
+          <Property Name="FromType">Any</Property>
+          <Property Name="ToType">FreeSpace</Property>
+        </Properties>
+        <Exit Name="OK" Type="Primary" NextID="5" />
+        <Exit Name="Failed" Type="Alternate" NextID="5" />
+      </Step>
+      <Step Type="SetNode" Name="RenegeNodeName" ID="5">
+        <Properties>
+          <Property Name="NodeName">OutputBufferRenegeTriggers.OutputBufferRenegeNodeName</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Transfer" Name="ToRenegeNodeName" ID="6">
+        <Properties>
+          <Property Name="FromType">Any</Property>
+          <Property Name="NodeName">OutputBufferRenegeTriggers.OutputBufferRenegeNodeName</Property>
+        </Properties>
+      </Step>
+      <Step Type="Destroy" Name="Entity" ID="7">
+        <Properties />
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- ZmV7aRJxpBPMXN4X6f7Arapyim+E6L/RYPo/Dg2ABrAgQIqf79HZVm9NTOZvtHOaK4HYOfrBeGgg8DpEjfnswg== -->

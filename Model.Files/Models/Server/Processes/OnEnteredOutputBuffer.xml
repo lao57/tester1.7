@@ -1,0 +1,53 @@
+<Fragment>
+  <Process Name="OnEnteredOutputBuffer" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">OutputBuffer.Entered</Property>
+      <Property Name="TokenActionOnAssociatedObjectDestroyed">EndProcess</Property>
+      <Property Name="TokenActionOnAssociatedObjectTransferRequested">EndProcess</Property>
+    </Properties>
+    <Steps>
+      <Step Type="EndTransfer" Name="IntoOutputBuffer" ID="2">
+        <Properties />
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Release" Name="Server" ID="3">
+        <Properties>
+          <Property Name="ResourceReleases">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ParentObject</Property>
+                <Property Name="QuantityType">All</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTryAllocate">ImmediatelyTryAllocateWhenReleased</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Assign" Name="BeforeExitingAssignments" ID="4">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsBeforeExiting</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsBeforeExitingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsBeforeExitingNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Transfer" Name="ToOutputNode" ID="5">
+        <Properties>
+          <Property Name="FromType">CurrentStation</Property>
+          <Property Name="ToType">ParentExternalNode</Property>
+          <Property Name="ExternalNodeName">Output</Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- +f8VcTqLzY53ePz670tXEuFxf/dzGxIoDsAHnnWmter+1YdCILQPVm5AlGqmGVK2m6TPTO8RH9s+q1UN81ExDA== -->

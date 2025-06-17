@@ -1,0 +1,42 @@
+<Fragment>
+  <Process Name="FailureOccurrenceLogic" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Fail" Name="Server" ID="2">
+        <Properties>
+          <Property Name="FailureName">
+            <Value>Failure</Value>
+          </Property>
+          <Property Name="TokenWaitAction">WaitUntilOnFailedProcessCompleted</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Delay" Name="TimeToRepair" ID="3">
+        <Properties>
+          <Property Name="DelayTime">TimeToRepair</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Repair" Name="Server" ID="4">
+        <Properties>
+          <Property Name="FailureName">
+            <Value>Failure</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Fire" Name="FailuresTimerResetEvent" ID="5">
+        <Properties>
+          <Property Name="EventName">FailuresTimerReset</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Allocate" Name="Server" ID="6">
+        <Properties>
+          <Property Name="ResourceType">ParentObject</Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- AteY17JqGauOe53B37UeVC+3s/RxXfJ6ME1J+J8sbOQiJumOYdSkjLl/J0/w5mw3zhGZNNONTQC0qaheLWZNqQ== -->

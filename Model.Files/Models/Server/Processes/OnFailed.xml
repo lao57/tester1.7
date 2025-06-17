@@ -1,0 +1,74 @@
+<Fragment>
+  <Process Name="OnFailed" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Suspend" Name="Processing" ID="2">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnEnteredProcessing</Value>
+          </Property>
+          <Property Name="SuspendActions">
+            <Rows>
+              <Properties>
+                <Property Name="SuspendActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Assign" Name="ResourceState" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.SuspendProcessing" ID="3">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ResourceState</Value>
+          </Property>
+          <Property Name="NewValue">Math.If((Capacity==0)&amp;&amp;(ResourceOwners&gt;Processing.NumberTransferringOut), List.ResourceStateName.Failed, ResourceState)</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Assign" Name="OnFailedAssignments" ID="4">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>OnEvaluatingSeizeRequest.Enabled</Value>
+          </Property>
+          <Property Name="NewValue">False</Property>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OnEvaluatingSeizeRequest.ReturnValue</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">False</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Fire" Name="FailedEvent" ID="5">
+        <Properties>
+          <Property Name="EventName">Failed</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Execute" Name="FailedAddOnProcess" ID="6">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>FailedAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Execute" Name="RepairingAddOnProcess" ID="7">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>RepairingAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- IVNgOvaUZE9hTy/bDnTQwef5BSBvKbowK0bUno1+vL+24Afho2cR5J9MBbaC/6e7kSFHddOLAzz0ScZ9hajhww== -->

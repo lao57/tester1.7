@@ -1,0 +1,64 @@
+<Fragment>
+  <Process Name="OnEnteredProcessing" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">Processing.Entered</Property>
+      <Property Name="TokenActionOnAssociatedObjectDestroyed">EndProcess</Property>
+      <Property Name="TokenActionOnAssociatedObjectTransferRequested">EndProcess</Property>
+    </Properties>
+    <Steps>
+      <Step Type="EndTransfer" Name="IntoProcessing" ID="2">
+        <Properties />
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="AddRow" Name="OnCreatedEntity" ID="3">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceOnCreatedEntityTableName</Property>
+          <Property Name="AddRowCondition">TableRowReferenceOnCreatedEntityActionType == Enum.TableRowReferenceActionType.AddNewRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="SetRow" Name="OnCreatedEntity" ID="4">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceOnCreatedEntityTableName</Property>
+          <Property Name="RowNumber">TableRowReferenceOnCreatedEntityRowNumber</Property>
+          <Property Name="SetRowCondition">TableRowReferenceOnCreatedEntityActionType == Enum.TableRowReferenceActionType.ReferenceExistingRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Execute" Name="CreatedEntityAddOnProcess" ID="5">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>CreatedEntityAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Assign" Name="BeforeExitingAssignments" ExclusionExpression="OutputBufferCapacity&gt;0" ID="6">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsBeforeExiting</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsBeforeExitingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsBeforeExitingNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Transfer" Name="ToOutputBuffer" ID="7">
+        <Properties>
+          <Property Name="FromType">CurrentStation</Property>
+          <Property Name="ToType">Station</Property>
+          <Property Name="StationName">
+            <Value>OutputBuffer</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- RDtPhWoSCiXsKlt45+0oF6mo0HvGaAk1ew360kk1y8d6M28rEJ5Sy43ZRnk+U1+ip5kp3F5xM+CDxL7+nKw9fw== -->

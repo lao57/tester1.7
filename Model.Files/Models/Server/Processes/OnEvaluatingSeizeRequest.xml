@@ -1,0 +1,31 @@
+<Fragment>
+  <Process Name="OnEvaluatingSeizeRequest" IsOverride="True" ShowAsUserExecutableProcess="False" InterfaceProcessID="Object.OnEvaluatingSeizeRequest" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Decide" Name="IfServerAvailable" ExclusionExpression="FailureType==List.ServerFailureType.NoFailures" ID="2">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">!Failure.Active &amp;&amp; (ProcessingCountBasedFailures.EventCount==0) &amp;&amp; (EventCountBasedFailures.EventCount==0) &amp;&amp; (CalendarTimeBasedFailures.EventCount==0) &amp;&amp; (ProcessingTimeBasedFailures.EventCount==0)</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="4" />
+        <Exit Name="False" Type="Alternate" NextID="3" />
+      </Step>
+      <Step Type="Assign" Name="RejectSeizeRequest" ID="3">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>Token.ReturnValue</Value>
+          </Property>
+          <Property Name="NewValue">False</Property>
+        </Properties>
+      </Step>
+      <Step Type="Execute" Name="EvaluatingSeizeRequestAddOnProcess" ID="4">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>EvaluatingSeizeRequestAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- wZWMoc+kHLDBenFivIlXVlnAp3LacOMPWcrPc9HP3Nv4W3OFLKitijmJCzUpwOUMgOO+FfeZJUKt6nW0qssBjg== -->

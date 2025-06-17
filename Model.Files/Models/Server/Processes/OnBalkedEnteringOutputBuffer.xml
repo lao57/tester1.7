@@ -1,0 +1,56 @@
+<Fragment>
+  <Process Name="OnBalkedEnteringOutputBuffer" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="OnBalkingAssignments" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsOnBalking</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsOnBalkingStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsOnBalkingNewValue</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">Math.If(AssignmentsOnBalking.AssignmentsOnBalkingAssignConditionType==List.OnBalkingAssignConditionType.CustomCondition, AssignmentsOnBalking.AssignmentsOnBalkingAssignCondition&lt;=0.0, AssignmentsOnBalking.AssignmentsOnBalkingAssignConditionType!=List.OnBalkingAssignConditionType.BalkingEnteringOutputBuffer)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Decide" Name="IfDestroyEntity" ID="3">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">!OutputBufferBalkNodeName.HasValue</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="7" />
+        <Exit Name="False" Type="Alternate" NextID="4" />
+      </Step>
+      <Step Type="Transfer" Name="ToFreeSpace" ID="4">
+        <Properties>
+          <Property Name="FromType">Any</Property>
+          <Property Name="ToType">FreeSpace</Property>
+        </Properties>
+        <Exit Name="OK" Type="Primary" NextID="5" />
+        <Exit Name="Failed" Type="Alternate" NextID="5" />
+      </Step>
+      <Step Type="SetNode" Name="BalkNodeName" ID="5">
+        <Properties>
+          <Property Name="NodeName">OutputBufferBalkNodeName</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Transfer" Name="ToBalkNodeName" ID="6">
+        <Properties>
+          <Property Name="FromType">Any</Property>
+          <Property Name="NodeName">OutputBufferBalkNodeName</Property>
+        </Properties>
+      </Step>
+      <Step Type="Destroy" Name="Entity" ID="7">
+        <Properties />
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- NIMHWATEj15Vt05ia9zNhv4U9U22j8q1CBn+HtvFKYsXwrMRo2Ycj9Gt2H/6jTnr9fNMH5qE3v+388Pc71UDqA== -->

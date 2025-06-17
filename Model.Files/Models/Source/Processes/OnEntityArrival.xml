@@ -1,0 +1,63 @@
+<Fragment>
+  <Process Name="OnEntityArrival" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">EntityArrivals.Event</Property>
+    </Properties>
+    <Steps>
+      <Step Type="AddRow" Name="BeforeCreatingEntities" ID="2">
+        <Properties>
+          <Property Name="ObjectType">Token</Property>
+          <Property Name="TableName">TableRowReferenceBeforeCreatingEntitiesTableName</Property>
+          <Property Name="AddRowCondition">TableRowReferenceBeforeCreatingEntitiesActionType == Enum.TableRowReferenceActionType.AddNewRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="SetRow" Name="BeforeCreatingEntities" ID="3">
+        <Properties>
+          <Property Name="TableName">TableRowReferenceBeforeCreatingEntitiesTableName</Property>
+          <Property Name="RowNumber">TableRowReferenceBeforeCreatingEntitiesRowNumber</Property>
+          <Property Name="ObjectType">Token</Property>
+          <Property Name="SetRowCondition">TableRowReferenceBeforeCreatingEntitiesActionType == Enum.TableRowReferenceActionType.ReferenceExistingRow</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Execute" Name="CreatingEntitiesAddOnProcess" ID="4">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>CreatingEntitiesAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Create" Name="Entities" ID="5">
+        <Properties>
+          <Property Name="EntityType">EntityType</Property>
+          <Property Name="NumberToCreate">EntitiesPerArrival</Property>
+          <Property Name="StockRequirements">
+            <Value>StockRequirements</Value>
+            <Rows>
+              <Properties>
+                <Property Name="StockRequirementIDNumber">StockRequirementIDNumber</Property>
+                <Property Name="StockRequirementMaterialName">
+                  <Value>StockRequirementMaterialName</Value>
+                </Property>
+                <Property Name="StockRequirementQuantity">StockRequirementQuantity</Property>
+                <Property Name="SkipStockRequirementCondition">SkipStockRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Created" Type="Alternate" NextID="6" />
+      </Step>
+      <Step Type="Transfer" Name="ToProcessing" ID="6">
+        <Properties>
+          <Property Name="ToType">Station</Property>
+          <Property Name="StationName">
+            <Value>Processing</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- 9azI7tt5doPWU0x5/NWWo40jOhtfRAxUAx4jPMrwlAex04eu3IOpGd6ZNMCpnKV+pefjfzgv1PD4bXXmxYiPtA== -->

@@ -1,0 +1,205 @@
+<Fragment>
+  <Icon>
+    <FileRef Name="Data\Icons\BasicNode.png" />
+  </Icon>
+  <ChangeDescriptions>
+    <ChangeDescription Version="58">Version 2.36: Renamed the 'TransferToLinkFailureLogic' process in the BasicNode process logic to 'TransferFailureLogic'. If the 'AutoTransferOnEntry' property value of the BasicNode is 'To Parent External Node' and the transfer to the specified parent external node fails, then the token now executes the 'TransferFailureLogic' process.</ChangeDescription>
+    <ChangeDescription Version="59">Version 2.37: Changed 'Capacity' display name to 'Initial Capacity' as object capacities are now user assignable.</ChangeDescription>
+    <ChangeDescription Version="64">Version 2.39: Updated the BasicNode object process logic to specify all of the object's process delays as non-interruptible.</ChangeDescription>
+    <ChangeDescription Version="65">Version 2.40: In the object process logic, the 'Action' property for all Execute steps executing an 'add-on process' is now specified as 'WaitUntilCompleted'.</ChangeDescription>
+    <ChangeDescription Version="66">Version 2.41: Minor property description and display name updates.</ChangeDescription>
+    <ChangeDescription Version="67">Version 3.42: Changes related to setting the 'Token Associated Object Destroyed Action' option for process logic in this object.</ChangeDescription>
+    <ChangeDescription Version="68">Version 3.44: 'SeizedObjects.UnitsOwned' function renamed to 'SeizedObjects.CapacityUnitsOwned'.</ChangeDescription>
+    <ChangeDescription Version="69">Version 3.47: Added new 'Appearance' property category.</ChangeDescription>
+    <ChangeDescription Version="70">Version 3.48: Hide new 'Random Number Stream' property in 'Routing Logic' category.</ChangeDescription>
+    <ChangeDescription Version="71">Version 3.49: Specified the 'OnAssociatedObjectTransferRequested' property of some processes as 'EndProcess'.</ChangeDescription>
+    <ChangeDescription Version="78">Version 3.54: Added new Notify step to 'TransferFailureLogic' process to output a warning if automatically destroying an entity. Conversion to 'OnRunInitialized' standard interface process. Added 'Run Ending' add-on process trigger.</ChangeDescription>
+    <ChangeDescription Version="81">Version 3.56: Added new 'Tally Statistics' property category.</ChangeDescription>
+    <ChangeDescription Version="82">Version 3.57: Change to new 'OnEnteredParking' standard interface process that was added to Simio's base node object.</ChangeDescription>
+    <ChangeDescription Version="84">Version 4.58: Removed 'AutoTransferOnEntry' property. The 'ExternalNodeName' property is now always visible with display name 'Bound External Output Node'.  If a transfer to parent external node attempt fails, then the token now continues normal processing instead of executing the 'TransferFailureLogic'. Added new 'Advanced Options' property category.</ChangeDescription>
+    <ChangeDescription Version="85">Version 4.60: Process logic now uses new object 'SeizedResources.CapacityUnitsOwned' function instead of deprecated 'SeizedObjects.CapacityUnitsOwned'.</ChangeDescription>
+    <ChangeDescription Version="86">Version 4.61: Set all inherited properties in 'Financials' category to not be visible.</ChangeDescription>
+    <ChangeDescription Version="87">Version 4.63: Set all inherited properties in 'Financials-&gt;Resource Costs' to not be visible.</ChangeDescription>
+    <ChangeDescription Version="88">Version 4.65: Process logic now uses new object 'SeizedResources.CapacityOwnedOf' function instead of deprecated 'SeizedResources.CapacityUnitsOwned'.</ChangeDescription>
+    <ChangeDescription Version="89">Version 4.66: If bound to an external output node of the parent model, a basic node's 'Entered' event is still fired and its 'Entered' add-on process trigger still executed before transferring the entity out of the parent model.</ChangeDescription>
+    <ChangeDescription Version="93">Version 4.68: The BasicNode object is no longer enabled as a resource object, and the 'InitialCapacity', 'RankingRule', and 'RankingExpression' properties have been replaced by equivalent 'InitialTravelerCapacity', 'EntryRankingRule', and 'EntryRankingExpression' properties. Renamed 'InitializedAddOnProcess' property to 'RunInitializedAddOnProcess'. Renamed 'ExternalNodeName' property to 'BoundExternalOutputNode'.</ChangeDescription>
+    <ChangeDescription Version="95">Version 4.73: New 'Random Number Stream' property now available in the 'Advanced Options' category.</ChangeDescription>
+    <ChangeDescription Version="96">Version 4.74: If a traveler is attempting to transfer out of the node and has no network assigned (i.e., is using free space for travel), then the node's process logic now transfers the traveler into free space.</ChangeDescription>
+    <ChangeDescription Version="97">Version 4.77: Removed an unnecessary 'TransferFailureLogic' Execute step from the 'OnEnteredToAssociatedObject' process logic.</ChangeDescription>
+    <ChangeDescription Version="98">Version 5.87: Process logic now uses new property 'HasValue' function instead of deprecated 'IsDefined'.</ChangeDescription>
+    <ChangeDescription Version="99">Version 5.91: Added information to indicate which properties to display if the new 'Show Commonly Used Properties Only' option is enabled.</ChangeDescription>
+    <ChangeDescription Version="100">Version 6.103: Some property description updates.</ChangeDescription>
+    <ChangeDescription Version="101">Version 7.130: Renamed 'RandomNumberStream' property to 'BranchingRandomNumberStream'</ChangeDescription>
+    <ChangeDescription Version="102">Version 7.131: Added new 'Routing Logic -&gt; Other Routing Out Options' property category with possible 'Branching Random Number Stream' property.</ChangeDescription>
+    <ChangeDescription Version="104">Version 8.133 'OnEntered' process logic no longer requires a Decide 'IfFreeSpaceTraveler' step. Added 'State Assignments' property category.</ChangeDescription>
+    <ChangeDescription Version="105">Version 8.134 'Routing Logic -&gt; Other Routing Out Options -&gt; Random Number Stream' property now inherited from the base node definition</ChangeDescription>
+    <ChangeDescription Version="106">Version 8.137 'TransferFailureLogic' now gives warning notification if automatically parking entity.</ChangeDescription>
+    <ChangeDescription Version="107">Version 8.147: Property description string updates.</ChangeDescription>
+    <ChangeDescription Version="108">Version 12.212: Renamed 'TalliesOnEnteringValue' property to 'TalliesOnEnteringValueExpression'. Renamed 'TalliesOnExitedValue' property to 'TalliesOnExitedValueExpression'.</ChangeDescription>
+    <ChangeDescription Version="110">Version 15.256: Added option to specify a path planner to conditionally use when transferring to an outbound link.</ChangeDescription>
+  </ChangeDescriptions>
+  <ChangeStringReplacements>
+    <ChangeStringReplacement Version="84" RegularExpressionPattern="(^|[^\w_])(?i:AutoTransferOnEntry)([^\w_]|$)" ReplacementString="$1ExternalNodeName.HasValue$2" />
+    <ChangeStringReplacement Version="84" RegularExpressionPattern="(^|[^\w_])(?i:List[\.]AutoTransferOnEntryType[\.]None)([^\w_]|$)" ReplacementString="$1False$2" />
+    <ChangeStringReplacement Version="93" RegularExpressionPattern="(^|[^\w_])(?i:InitializedAddOnProcess)([^\w_]|$)" ReplacementString="$1RunInitializedAddOnProcess$2" />
+    <ChangeStringReplacement Version="93" RegularExpressionPattern="(^|[^\w_])(?i:ExternalNodeName)([^\w_]|$)" ReplacementString="$1BoundExternalOutputNode$2" />
+  </ChangeStringReplacements>
+  <Lists>
+    <StringList Name="ActionConditionType">
+      <Items>
+        <Item Value="NoCondition" />
+        <Item Value="IsEntity" />
+        <Item Value="IsTransporter" />
+        <Item Value="CustomCondition" />
+      </Items>
+    </StringList>
+  </Lists>
+  <PropertyDefinitions>
+    <Categories>
+      <Category Name="Crossing Logic" Description="Crossing Logic" />
+      <Category Name="Routing Logic" Description="Routing Logic" />
+      <Category Name="Routing Logic/Network Path" Description="Routing Logic/Network Path" />
+      <Category Name="State Assignments" Description="Optional State Assignments" InitiallyExpanded="False" />
+      <Category Name="Tally Statistics" Description="Optional Tally Statistics" InitiallyExpanded="False" />
+      <Category Name="Add-On Process Triggers" Description="Add-On Process Triggers" InitiallyExpanded="False" />
+      <Category Name="Financials" Description="Financials" InitiallyExpanded="False" />
+      <Category Name="Advanced Options" Description="Advanced Options" InitiallyExpanded="False" />
+    </Categories>
+    <ElementProperty Name="PathPlannerName" DisplayName="Path Planner Name" Description="The name of the Path Planner element used by an entity to find and reserve a network deadlock-free shortest path from this node to its destination node.&#xD;&#xA;&#xD;&#xA;NOTE: If path planning is used by an entity then the Outbound Link Preference and Outbound Link Rule properties are ignored." Category="Routing Logic/Network Path" Required="False" NullString="null" Type="PathPlanner">
+      <Switch Property="OutboundTravelMode" Comparison="NotEqual" Value="FreeSpaceOnly" />
+    </ElementProperty>
+    <RepeatingProperty Name="AssignmentsOnEntering" DisplayName="On Entering" Description="Optional state assignments when an entity is entering the object." Category="State Assignments" Required="False" NullString="null">
+      <PropertyDefinitions>
+        <Categories>
+          <Category Name="Basic Logic" Description="State Assignments (Basic Logic)" />
+        </Categories>
+        <ListProperty Name="AssignmentsOnEnteringAssignConditionType" DisplayName="Assign If" Description="Condition required to perform the assignment." Category="Basic Logic" DefaultValue="Entity Entering" NullString="null" List="ActionConditionType">
+          <Captions>
+            <Caption Value="NoCondition" Display="No Condition" />
+            <Caption Value="IsEntity" Display="Entity Entering" />
+            <Caption Value="IsTransporter" Display="Transporter Entering" />
+            <Caption Value="CustomCondition" Display="Custom Condition" />
+          </Captions>
+        </ListProperty>
+        <ExpressionProperty Name="AssignmentsOnEnteringAssignCondition" DisplayName="Condition" Description="The condition required to perform the assignment." Category="Basic Logic" DefaultValue="0.0" Parent="AssignmentsOnEnteringAssignConditionType" NullString="null">
+          <Switch Property="AssignmentsOnEnteringAssignConditionType" Value="CustomCondition" />
+        </ExpressionProperty>
+        <StateProperty Name="AssignmentsOnEnteringStateVariableName" DisplayName="State Variable Name" Description="Name of the state variable that will be assigned a new value." Category="Basic Logic" Required="False" NullString="null" IsAssignable="True" />
+        <ExpressionProperty Name="AssignmentsOnEnteringNewValue" DisplayName="New Value" Description="The new value to assign." Category="Basic Logic" DefaultValue="0.0" Required="False" NullString="null" UnitTypeProperty="AssignmentsOnEnteringStateVariableName" />
+        <Overrides />
+      </PropertyDefinitions>
+    </RepeatingProperty>
+    <RepeatingProperty Name="TalliesOnEntering" DisplayName="On Entering" Description="Optional tally statistics to record when an entity is entering the node." Category="Tally Statistics" Required="False" NullString="null">
+      <PropertyDefinitions>
+        <Categories>
+          <Category Name="Basic Logic" Description="Tally Statistics (Basic Logic)" />
+        </Categories>
+        <ListProperty Name="TalliesOnEnteringTallyConditionType" DisplayName="Tally If" Description="Condition required to record the tally statistic." Category="Basic Logic" DefaultValue="Entity Entering" NullString="null" List="ActionConditionType">
+          <Captions>
+            <Caption Value="NoCondition" Display="No Condition" />
+            <Caption Value="IsEntity" Display="Entity Entering" />
+            <Caption Value="IsTransporter" Display="Transporter Entering" />
+            <Caption Value="CustomCondition" Display="Custom Condition" />
+          </Captions>
+        </ListProperty>
+        <ExpressionProperty Name="TalliesOnEnteringTallyCondition" DisplayName="Condition" Description="The condition required to record the tally statistic." Category="Basic Logic" DefaultValue="0.0" Parent="TalliesOnEnteringTallyConditionType" NullString="null">
+          <Switch Property="TalliesOnEnteringTallyConditionType" Value="CustomCondition" />
+        </ExpressionProperty>
+        <ElementProperty Name="TalliesOnEnteringTallyStatisticName" DisplayName="Tally Statistic Name" Description="The name of the tally statistic for which to record an observation value." Category="Basic Logic" Required="False" NullString="null" Type="TallyStatistic" />
+        <EnumProperty Name="TalliesOnEnteringValueType" DisplayName="Value Type" Description="The type of observation value to record.&#xD;&#xA;&#xD;&#xA;If the value type is 'Expression', then the value of the specified expression is recorded.&#xD;&#xA;&#xD;&#xA;If the value type is 'TimeBetween', then the time since the last entity arrival to this or any other Tally step referencing the tally statistic is recorded." Category="Basic Logic" DefaultValue="Expression" NullString="null" EnumType="TallyValueType" />
+        <ExpressionProperty Name="TalliesOnEnteringValueExpression" DisplayName="Value Expression" Description="The expression returning the value to be recorded." Category="Basic Logic" DefaultValue="0.0" NullString="null" UnitTypeProperty="TalliesOnEnteringTallyStatisticName">
+          <Switch Property="TalliesOnEnteringValueType" Value="Expression" />
+        </ExpressionProperty>
+        <Overrides />
+        <PropertyReplacements>
+          <PropertyReplacement Version="110" OldPropertyName="TalliesOnEnteringValue" NewPropertyName="TalliesOnEnteringValueExpression" />
+        </PropertyReplacements>
+      </PropertyDefinitions>
+    </RepeatingProperty>
+    <RepeatingProperty Name="TalliesOnExited" DisplayName="On Exited" Description="Optional tally statistics to record when an entity has exited the node." Category="Tally Statistics" Required="False" NullString="null">
+      <PropertyDefinitions>
+        <Categories>
+          <Category Name="Basic Logic" Description="Tally Statistics (Basic Logic)" />
+        </Categories>
+        <ListProperty Name="TalliesOnExitedTallyConditionType" DisplayName="Tally If" Description="Condition required to record the tally statistic." Category="Basic Logic" DefaultValue="Entity Exited" NullString="null" List="ActionConditionType">
+          <Captions>
+            <Caption Value="NoCondition" Display="No Condition" />
+            <Caption Value="IsEntity" Display="Entity Exited" />
+            <Caption Value="IsTransporter" Display="Transporter Exited" />
+            <Caption Value="CustomCondition" Display="Custom Condition" />
+          </Captions>
+        </ListProperty>
+        <ExpressionProperty Name="TalliesOnExitedTallyCondition" DisplayName="Condition" Description="The condition required to record the tally statistic." Category="Basic Logic" DefaultValue="0.0" Parent="TalliesOnExitedTallyConditionType" NullString="null">
+          <Switch Property="TalliesOnExitedTallyConditionType" Value="CustomCondition" />
+        </ExpressionProperty>
+        <ElementProperty Name="TalliesOnExitedTallyStatisticName" DisplayName="Tally Statistic Name" Description="The name of the tally statistic for which to record an observation value." Category="Basic Logic" Required="False" NullString="null" Type="TallyStatistic" />
+        <EnumProperty Name="TalliesOnExitedValueType" DisplayName="Value Type" Description="The type of observation value to record.&#xD;&#xA;&#xD;&#xA;If the value type is 'Expression', then the value of the specified expression is recorded.&#xD;&#xA;&#xD;&#xA;If the value type is 'TimeBetween', then the time since the last entity arrival to this or any other Tally step referencing the tally statistic is recorded." Category="Basic Logic" DefaultValue="Expression" NullString="null" EnumType="TallyValueType" />
+        <ExpressionProperty Name="TalliesOnExitedValueExpression" DisplayName="Value Expression" Description="The expression returning the value to be recorded." Category="Basic Logic" DefaultValue="0.0" NullString="null" UnitTypeProperty="TalliesOnExitedTallyStatisticName">
+          <Switch Property="TalliesOnExitedValueType" Value="Expression" />
+        </ExpressionProperty>
+        <Overrides />
+        <PropertyReplacements>
+          <PropertyReplacement Version="110" OldPropertyName="TalliesOnExitedValue" NewPropertyName="TalliesOnExitedValueExpression" />
+        </PropertyReplacements>
+      </PropertyDefinitions>
+    </RepeatingProperty>
+    <ElementProperty Name="RunInitializedAddOnProcess" DisplayName="Run Initialized" Description="Occurs when the simulation run is initialized." Category="Add-On Process Triggers" Required="False" NullString="null" ValueListFilter="UserExecutableProcessesOnly" Type="Process" />
+    <ElementProperty Name="RunEndingAddOnProcess" DisplayName="Run Ending" Description="Occurs when the simulation run is ending." Category="Add-On Process Triggers" Required="False" NullString="null" ValueListFilter="UserExecutableProcessesOnly" Type="Process" />
+    <ElementProperty Name="EnteredAddOnProcess" DisplayName="Entered" Description="Occurs when an entity's leading edge has entered this node." Category="Add-On Process Triggers" Required="False" NullString="null" ValueListFilter="UserExecutableProcessesOnly" Type="Process" />
+    <ElementProperty Name="ExitedAddOnProcess" DisplayName="Exited" Description="Occurs when an entity's trailing edge has exited this node." Category="Add-On Process Triggers" Required="False" NullString="null" ValueListFilter="UserExecutableProcessesOnly" Type="Process" />
+    <ExternalNodeProperty Name="BoundExternalOutputNode" DisplayName="Bound External Output Node" Description="The name of an external output node that this node has been bound to in order to transfer entities out of the containing (parent) object. The transfer attempt will be performed by an entity immediately upon entering the node and, if successful, any other crossing and routing logic for the node will be ignored." Category="Advanced Options" Required="False" NullString="null" />
+    <Overrides>
+      <Override Name="ReportStatistics" DefaultValue="False" />
+      <Override Name="ParentCostCenter" Visible="False" InheritDefaultValue="True" />
+      <Override Name="InitialCost" Visible="False" InheritDefaultValue="True" />
+      <Override Name="InitialCostRate" Visible="False" InheritDefaultValue="True" />
+      <Override Name="ResourceIdleCostRate" Visible="False" InheritDefaultValue="True" />
+      <Override Name="ResourceCostPerUse" Visible="False" InheritDefaultValue="True" />
+      <Override Name="ResourceUsageCostRate" Visible="False" InheritDefaultValue="True" />
+      <Override Name="LogResourceUsage" Visible="False" InheritDefaultValue="True" />
+      <Override Name="DisplayCategory" Visible="False" InheritDefaultValue="True" />
+      <Override Name="DisplayColor" Visible="False" InheritDefaultValue="True" />
+      <Override Name="IncludeInPlanResourceConstraints" Visible="False" InheritDefaultValue="True" />
+      <Override Name="CapacityType" Visible="False" InheritDefaultValue="True" />
+      <Override Name="InitialWorkSchedule" Visible="False" InheritDefaultValue="True" />
+      <Override Name="WorkDayExceptions" Visible="False" InheritDefaultValue="True" />
+      <Override Name="WorkPeriodExceptions" Visible="False" InheritDefaultValue="True" />
+      <Override Name="InitialCapacity" Visible="False" InheritDefaultValue="True" />
+      <Override Name="RankingRule" Visible="False" InheritDefaultValue="True" />
+      <Override Name="RankingExpression" Visible="False" InheritDefaultValue="True" />
+      <Override Name="DynamicSelectionRule" Visible="False" InheritDefaultValue="True" />
+      <Override Name="EntryExemptionCondition" Visible="False" InheritDefaultValue="True" />
+    </Overrides>
+    <PropertyReplacements>
+      <PropertyReplacement Version="92" OldPropertyName="InitialCapacity" NewPropertyName="InitialTravelerCapacity" />
+      <PropertyReplacement Version="92" OldPropertyName="RankingRule" NewPropertyName="EntryRankingRule" />
+      <PropertyReplacement Version="92" OldPropertyName="RankingExpression" NewPropertyName="EntryRankingExpression" />
+      <PropertyReplacement Version="92" OldPropertyName="InitializedAddOnProcess" NewPropertyName="RunInitializedAddOnProcess" />
+      <PropertyReplacement Version="92" OldPropertyName="ExternalNodeName" NewPropertyName="BoundExternalOutputNode" />
+      <PropertyReplacement Version="101" OldPropertyName="RandomNumberStream" NewPropertyName="BranchingRandomNumberStream" />
+    </PropertyReplacements>
+  </PropertyDefinitions>
+  <States />
+  <Events>
+    <Event Name="Entered" Description="The Entered event provides notification that an entity has entered the node." />
+    <Event Name="Exited" Description="The Exited event provides notification that an entity has exited the node." />
+  </Events>
+  <Elements />
+  <Processes>
+    <FileRef Name="Models\BasicNode\Processes\OnRunInitialized.xml" />
+    <FileRef Name="Models\BasicNode\Processes\OnRunEnding.xml" />
+    <FileRef Name="Models\BasicNode\Processes\OnEntered.xml" />
+    <FileRef Name="Models\BasicNode\Processes\OnExited.xml" />
+    <FileRef Name="Models\BasicNode\Processes\OnEnteredToAssociatedObject.xml" />
+    <FileRef Name="Models\BasicNode\Processes\OnEnteredParking.xml" />
+    <FileRef Name="Models\BasicNode\Processes\TransferFailureLogic.xml" />
+  </Processes>
+  <SaveHistories>
+    <SaveHistory SavedDateTime="2025-04-29T14:28:26" ProductVersion="18.276.45400.0" Edition="Internal" />
+    <SaveHistory SavedDateTime="2025-06-17T19:14:17" ProductVersion="18.276.45400.0" Edition="RPS" />
+  </SaveHistories>
+  <Graphics>
+    <AnimationSetup MinimumNumberOfFramesToDisplayIdleAnimation="10" />
+  </Graphics>
+</Fragment>
+<!-- o9PB70HlK/NSwDzFnh6LXg8bpDOhiSe1MmcC85u0TLvNHuEPjITmZYt25hHsK+Efh2D5wxf0K0eRvpPNUeK5mg== -->

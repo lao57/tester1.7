@@ -1,0 +1,98 @@
+<Fragment>
+  <Process Name="OnCapacityChanged" IsOverride="True" ShowAsUserExecutableProcess="False" InterfaceProcessID="Object.OnCapacityChanged" BeginStepID="2">
+    <Properties />
+    <Steps>
+      <Step Type="Assign" Name="ProcessingCapacity" ID="2">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>Processing.CurrentCapacity</Value>
+          </Property>
+          <Property Name="NewValue">Capacity</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Decide" Name="IfOnShift" ID="3">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">(Capacity.Previous==0)&amp;&amp;(Capacity&gt;0)</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="8" />
+        <Exit Name="False" Type="Alternate" NextID="4" />
+      </Step>
+      <Step Type="Decide" Name="IfOffShift" ID="4">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">(Capacity.Previous&gt;0)&amp;&amp;(Capacity==0)</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Suspend" Name="Processing" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted" ID="5">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnEnteredProcessing</Value>
+          </Property>
+          <Property Name="SuspendActions">
+            <Rows>
+              <Properties>
+                <Property Name="SuspendActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Assign" Name="ResourceState" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.SuspendProcessing" ID="6">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ResourceState</Value>
+          </Property>
+          <Property Name="NewValue">Math.If((ResourceOwners==0)||(ResourceOwners==Processing.NumberTransferringOut), List.ResourceStateName.OffShift, Failure.Active, List.ResourceStateName.Failed, HasActiveChangeover, List.ResourceStateName.OffShiftSetup, List.ResourceStateName.OffShiftProcessing)</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Execute" Name="OffShiftAddOnProcess" ID="7">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OffShiftAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+      <Step Type="Resume" Name="Processing" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted" ID="8">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnEnteredProcessing</Value>
+          </Property>
+          <Property Name="ResumeActions">
+            <Rows>
+              <Properties>
+                <Property Name="ResumeActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="9" />
+      </Step>
+      <Step Type="Assign" Name="ResourceState" ExclusionExpression="OffShiftRule==List.OffShiftRuleName.SuspendProcessing" ID="9">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ResourceState</Value>
+          </Property>
+          <Property Name="NewValue">Math.If((!Failure.Active)&amp;&amp;(ResourceOwners&gt;0)&amp;&amp;((Capacity.Remaining&gt;0)||(ResourceOwners&gt;Processing.NumberTransferringOut))&amp;&amp;(!HasActiveChangeover), List.ResourceStateName.Processing, (!Failure.Active)&amp;&amp;(ResourceOwners&gt;0)&amp;&amp;(HasActiveChangeover), List.ResourceStateName.Setup, ResourceState)</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="10" />
+      </Step>
+      <Step Type="Execute" Name="OnShiftAddOnProcess" ID="10">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>OnShiftAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- tR8xNgKfrqmpbMUcTIduXq2P93EV04CV9Zp9SjYj7D8gWE+33G5BpqR4l3+WE0zt38O0UlWoQSV/f+teB7oi8g== -->

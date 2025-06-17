@@ -1,0 +1,66 @@
+<Fragment>
+  <Process Name="OnEnteredInputBuffer" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">InputBuffer.Entered</Property>
+      <Property Name="TokenActionOnAssociatedObjectDestroyed">EndProcess</Property>
+      <Property Name="TokenActionOnAssociatedObjectTransferRequested">EndProcess</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Assign" Name="OnEnteringAssignments" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>AssignmentsOnEntering</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>AssignmentsOnEnteringStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">AssignmentsOnEnteringNewValue</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Execute" Name="EnteredAddOnProcess" ID="3">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>EnteredAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Delay" Name="TransferInTime" ID="4">
+        <Properties>
+          <Property Name="DelayTime">TransferInTime</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="EndTransfer" Name="IntoInputBuffer" ID="5">
+        <Properties />
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Execute" Name="DestroyingEntityAddOnProcess" ID="6">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>DestroyingEntityAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Tally" Name="TimeInSystem" ID="7">
+        <Properties>
+          <Property Name="TallyStatisticName">
+            <Value>TimeInSystem</Value>
+          </Property>
+          <Property Name="ValueExpression">Entity.TimeInSystem</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="8" />
+      </Step>
+      <Step Type="Destroy" Name="Entity" ID="8">
+        <Properties />
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- VR1AB54wtAtJRR8+ckCpDkuKw5pzbtxdcjp4pqPaHVj04I3YrXgJ7MOsRPqXjlfE6qfZxAj6mbAbym6a18RmpA== -->

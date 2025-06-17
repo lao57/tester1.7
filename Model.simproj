@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ProductVersion="18.276.45400.0" FileVersion="254" WriteToMultipleFiles="True" Id="26541245-2c38-41d0-b1fc-b1bf051a7997" xmlns="http://www.simio.com/projects/v1">
+  <DocumentInfo LicenseInfo="15:1" UserName="" Organization="" SerialNumber="" MachineData="AQAAACAAAACD7QDoiF2hcTM0tY48A226lYvgOi+/wkrsCO9Ls199EAYBAAABAAAA0Iyd3wEV0RGMegDAT8KX6wEAAACPc8UUyHdhSJ1fzlTWCLoLBAAAAAIAAAAAABBmAAAAAQAAIAAAANpdCVAN3H6wbe0ZGftQRVtA0EOZiOijuihjskfiu/2zAAAAAA6AAAAAAgAAIAAAABvKY+BGIhwpKwpZLB1bsjo5ltwnf1dEmygbnQgZ/hu3MAAAAKHv3Cj9j297dq4+QmC8eshZdKldfrHf8vEN9vVVK9c/pQRbrU/rBMjFm2r17CXNH0AAAABJXhmo7s24ZQRHL0QFOpjSGoq34yfnw3jtkqxNLk2EcMzFc/q3JgzA9EwRZJ6/ZD1OV8+oGqyHUOWhuZnPFs8G" SaveDate="2025-06-17T19:14:17" Sig="KfxKpUZIfagSDVy9XUUsKns1bptMq8FZkB6OylehzwO1TKTJUiyTaYWyDaRrhsMt+0+wJY+GXYcgnU8fMQ0AdA==" />
+  <Models>
+    <Model Definition="ModelEntity" Runnable="False">
+      <TargetSettings HighRiskThreshold="50" MediumRiskThreshold="80" HighRiskColor="ff0000" MediumRiskColor="ffff00" LowRiskColor="90ee90" />
+      <ModelViewInfo>
+        <FileRef Name="ViewInfos\ModelEntity_ModelViewInfo.xml" />
+      </ModelViewInfo>
+    </Model>
+    <Model Definition="Model">
+      <RunSetup AnimationInterval="1" ReplicationNumber="1" Latitude="40.539912" Longitude="-80.180157">
+        <StartDate>2025-06-23T00:00:00</StartDate>
+        <EndDate>2025-06-24T00:00:00</EndDate>
+      </RunSetup>
+      <TargetSettings HighRiskThreshold="50" MediumRiskThreshold="80" HighRiskColor="ff0000" MediumRiskColor="ffff00" LowRiskColor="90ee90" />
+      <RunnableInstance>
+        <Properties>
+          <Property Name="InitialCost" Units="USD">0.0</Property>
+          <Property Name="InitialCostRate" Units="USD per Hour">0.0</Property>
+          <Property Name="ResourceIdleCostRate" Units="USD per Hour">0.0</Property>
+          <Property Name="ResourceCostPerUse" Units="USD">0.0</Property>
+          <Property Name="ResourceUsageCostRate" Units="USD per Hour">0.0</Property>
+          <Property Name="DynamicSelectionRule">
+            <Value>None</Value>
+          </Property>
+        </Properties>
+      </RunnableInstance>
+      <ModelViewInfo>
+        <FileRef Name="ViewInfos\Model_ModelViewInfo.xml" />
+      </ModelViewInfo>
+    </Model>
+  </Models>
+  <Libraries>
+    <LibraryRef Name="Extras Library" Id="97fb5c31-0a87-4ae8-847a-eb28d64aefd8" PathHint="C:\Program Files\Simio LLC\Simio\Examples\ExtrasLibrary.spfx" />
+  </Libraries>
+  <CommonItems>
+    <Definitions>
+      <EntityDefinition Name="ModelEntity" Id="945df23b-3b6d-4974-8974-fca7e6883af6" Revision="0" FileVersion="254" Description="The default entity definition for your project." CreationDateTime="2025-06-17T19:08:59.5427378Z">
+        <FileRef Name="Models\ModelEntity\945df23b-3b6d-4974-8974-fca7e6883af6.xml" />
+      </EntityDefinition>
+      <FixedDefinition Name="Model" Id="5af83849-3eda-42ab-812c-bf6f00e2c80a" Revision="1" FileVersion="254" CreationDateTime="2025-06-17T19:08:59.7952476Z">
+        <FileRef Name="Models\Model\5af83849-3eda-42ab-812c-bf6f00e2c80a.xml" />
+      </FixedDefinition>
+    </Definitions>
+    <DefinitionRefs>
+      <DefinitionRef Name="ModelEntity">
+        <Id>945df23b-3b6d-4974-8974-fca7e6883af6</Id>
+        <Revision>0</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="Model">
+        <Id>5af83849-3eda-42ab-812c-bf6f00e2c80a</Id>
+        <Revision>1</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="TransferNode">
+        <Id>0d40fbf0-8206-443f-b771-65f85633a2f6</Id>
+        <Revision>168</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="Server">
+        <Id>1bc342dc-9d96-49f2-ae4a-af8f05416564</Id>
+        <Revision>276</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="Sink">
+        <Id>5f44138f-a5f7-40d1-ab9a-eea7c5f0254e</Id>
+        <Revision>71</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="BasicNode">
+        <Id>585953ca-c744-444b-92d9-8af032f3e9a1</Id>
+        <Revision>110</Revision>
+      </DefinitionRef>
+      <DefinitionRef Name="Source">
+        <Id>1d0ccf22-61f9-4fc0-9b3c-01d17e71402d</Id>
+        <Revision>132</Revision>
+      </DefinitionRef>
+    </DefinitionRefs>
+    <Materials>
+      <ColorMaterial Id="7073f759-0816-4f0a-a6a5-ec63b3a5af4c" Color="008000" />
+      <ColorMaterial Id="a7b63685-5322-402e-9634-5ca7b427ebc5" Color="008000" />
+      <ColorMaterial Id="b352e1b9-1335-4b48-a47f-f492a5160a4b" Color="ffff00" />
+      <ColorMaterial Id="61a234f2-2a2c-4c73-adf1-1b30c3bda910" Color="ff0000" />
+      <ColorMaterial Id="22dcf78b-3914-43d3-a816-c633a956d840" Color="ffffff" />
+      <ColorMaterial Id="2031ae23-7469-44a1-bf6d-293aaea588c2" Color="ff0000" />
+      <ColorMaterial Id="41f70636-193a-4e9b-84ca-baaf8c44abe1" Color="ffffff" />
+      <ColorMaterial Id="67a4072e-8cd7-427a-845a-70cbb23e0bc1" Color="008000" />
+      <ColorMaterial Id="717b2319-fe7c-46e2-a7e5-fd61fa89f001" Color="ffffff" />
+    </Materials>
+    <Definitions>
+      <NodeDefinition Name="BasicNode" Id="585953ca-c744-444b-92d9-8af032f3e9a1" Revision="110" FileVersion="254" Author="Simio Employee" Description="A BasicNode object may be used by an entity to transfer into or out of an object. This type of node may also be used to define an intersection point in a network of links." CreationDateTime="2025-04-29T14:28:22.8875005Z" Color="808080">
+        <FileRef Name="Models\BasicNode\585953ca-c744-444b-92d9-8af032f3e9a1.xml" />
+      </NodeDefinition>
+      <FixedDefinition Name="Server" Id="1bc342dc-9d96-49f2-ae4a-af8f05416564" Revision="276" FileVersion="254" Author="Simio Employee" Description="A Server object may be used to model a capacity-constrained processing location. Operations performed at the server can be modeled as either a processing time or as a sequence of tasks. Secondary resources or material requirements may be optionally specified." ResourceLogic="True" CreationDateTime="2025-04-29T14:28:24.5247635Z">
+        <FileRef Name="Models\Server\1bc342dc-9d96-49f2-ae4a-af8f05416564.xml" />
+      </FixedDefinition>
+      <FixedDefinition Name="Sink" Id="5f44138f-a5f7-40d1-ab9a-eea7c5f0254e" Revision="71" FileVersion="254" Author="Simio Employee" Description="A Sink object may be used to destroy entities that have finished processing in the model." CreationDateTime="2025-04-29T14:28:23.7336871Z">
+        <FileRef Name="Models\Sink\5f44138f-a5f7-40d1-ab9a-eea7c5f0254e.xml" />
+      </FixedDefinition>
+      <FixedDefinition Name="Source" Id="1d0ccf22-61f9-4fc0-9b3c-01d17e71402d" Revision="132" FileVersion="254" Author="Simio Employee" Description="A Source object may be used to generate entities of a specified type." CreationDateTime="2025-04-29T14:28:23.5258217Z">
+        <FileRef Name="Models\Source\1d0ccf22-61f9-4fc0-9b3c-01d17e71402d.xml" />
+      </FixedDefinition>
+      <NodeDefinition Name="TransferNode" Id="0d40fbf0-8206-443f-b771-65f85633a2f6" Revision="168" FileVersion="254" Author="Simio Employee" Description="A TransferNode object may be used by an entity to transfer into or out of an object. This type of node may also be used to define an intersection point in a network of links. Optional entity destination selection and transport logic is provided." CreationDateTime="2025-04-29T14:28:23.4610445Z" Color="1e90ff">
+        <FileRef Name="Models\TransferNode\0d40fbf0-8206-443f-b771-65f85633a2f6.xml" />
+      </NodeDefinition>
+    </Definitions>
+    <Symbols>
+      <Symbol Name="Server" Id="40ac3b5a-78c5-4e3d-b106-349426cf8bb3" Types="StandardLibrary" Actions="Static" PadBoundingBox="True">
+        <Thumbnail>
+          <FileRef Name="Data\Thumbnails\Server.png" />
+        </Thumbnail>
+        <Graphics>
+          <Geometry Center="0 3.576279E-07 3.72529E-09" Scale="5.126141">
+            <GeometryData>
+              <MeshData>
+                <FileRef Name="Data\Geometry\Server.s3d" />
+              </MeshData>
+              <GeometryDataPieces />
+            </GeometryData>
+            <Decorations>
+              <Decoration SurfaceId="0">
+                <MaterialRef Id="72ddb72d-221f-4088-af13-b2940aa9aa7b" />
+              </Decoration>
+              <Decoration SurfaceId="1">
+                <MaterialRef Id="d3c32277-2baa-4e7a-ad35-6b0976cdbb2a" />
+              </Decoration>
+            </Decorations>
+          </Geometry>
+        </Graphics>
+      </Symbol>
+      <Symbol Name="Sink" Id="f5b0a0b7-4274-403c-981c-33d4b6e077a5" Types="StandardLibrary" Actions="Static" PadBoundingBox="True">
+        <Thumbnail>
+          <FileRef Name="Data\Thumbnails\Sink.png" />
+        </Thumbnail>
+        <Graphics>
+          <Geometry Center="0 3.576279E-07 0" Scale="5.228027">
+            <GeometryData>
+              <MeshData>
+                <FileRef Name="Data\Geometry\Sink.s3d" />
+              </MeshData>
+              <GeometryDataPieces />
+            </GeometryData>
+            <Decorations>
+              <Decoration SurfaceId="0">
+                <MaterialRef Id="bab850ad-84d5-4885-a81d-3f604b121144" />
+              </Decoration>
+              <Decoration SurfaceId="1">
+                <MaterialRef Id="def9c0aa-66b6-4b4e-b436-e0dfa0c0d5cf" />
+              </Decoration>
+            </Decorations>
+          </Geometry>
+        </Graphics>
+      </Symbol>
+      <Symbol Name="Source" Id="4253805c-d9dd-447f-b808-dc61ab3765de" Types="StandardLibrary" Actions="Static" PadBoundingBox="True">
+        <Thumbnail>
+          <FileRef Name="Data\Thumbnails\Source.png" />
+        </Thumbnail>
+        <Graphics>
+          <Geometry Center="0 -3.576279E-07 -1.490116E-08" Scale="5.10292">
+            <GeometryData>
+              <MeshData>
+                <FileRef Name="Data\Geometry\Source.s3d" />
+              </MeshData>
+              <GeometryDataPieces />
+            </GeometryData>
+            <Decorations>
+              <Decoration SurfaceId="0">
+                <MaterialRef Id="9699965b-b2a7-449d-a1aa-2b4b69e9f686" />
+              </Decoration>
+              <Decoration SurfaceId="1">
+                <MaterialRef Id="9539f632-7efb-49b3-a6cd-5c1627c06e27" />
+              </Decoration>
+            </Decorations>
+          </Geometry>
+        </Graphics>
+      </Symbol>
+    </Symbols>
+    <Materials>
+      <TextureMaterial Id="72ddb72d-221f-4088-af13-b2940aa9aa7b" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture.jpg" />
+        </Image>
+      </TextureMaterial>
+      <TextureMaterial Id="d3c32277-2baa-4e7a-ad35-6b0976cdbb2a" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture1.jpg" />
+        </Image>
+      </TextureMaterial>
+      <TextureMaterial Id="bab850ad-84d5-4885-a81d-3f604b121144" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture2.jpg" />
+        </Image>
+      </TextureMaterial>
+      <TextureMaterial Id="def9c0aa-66b6-4b4e-b436-e0dfa0c0d5cf" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture3.jpg" />
+        </Image>
+      </TextureMaterial>
+      <TextureMaterial Id="9699965b-b2a7-449d-a1aa-2b4b69e9f686" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture4.jpg" />
+        </Image>
+      </TextureMaterial>
+      <TextureMaterial Id="9539f632-7efb-49b3-a6cd-5c1627c06e27" Name="SketchupTexture">
+        <Image>
+          <FileRef Name="Data\Textures\SketchupTexture5.jpg" />
+        </Image>
+      </TextureMaterial>
+    </Materials>
+  </CommonItems>
+</Project>
+<!-- OnFM77RPg8p88XpZb5IU3r+nnHgNnpHRDoYpvASnKotUnzNnQM5NjoIeDKrSulx/k5Iwkmv5V8NCOHIaVK60wQ== -->

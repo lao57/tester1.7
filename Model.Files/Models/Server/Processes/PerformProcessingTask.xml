@@ -1,0 +1,354 @@
+<Fragment>
+  <Process Name="PerformProcessingTask" BeginStepID="2">
+    <Properties>
+      <Property Name="TokenClassName">ProcessingTaskToken</Property>
+      <Property Name="TokenActionOnAssociatedObjectDestroyed">EndProcess</Property>
+      <Property Name="TokenActionOnAssociatedObjectTransferRequested">EndProcess</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Assign" Name="ResourceState" ID="2">
+        <Properties>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ResourceState</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Math.If(Capacity==0, List.ResourceStateName.OffShiftSetup, List.ResourceStateName.Setup)</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">ProcessingTasks.TaskProcessType!=Enum.TaskProcessType.SequenceDependentSetup</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingTaskToken.ExpectedSetupTime</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">ProcessingTasks.TaskChangeoverLogicName.ExpectedSetupTime(ParentObject, Entity)</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">(ProcessingTasks.TaskProcessType!=Enum.TaskProcessType.SequenceDependentSetup)||(ProcessingTasks.TaskChangeoverLogicName.HasValue==False)||((Math.If(ProcessingTaskResourcesReferencedTableName.HasValue, ProcessingTaskResourcesReferencedTableName.AvailableRowCount&gt;0, ProcessingTasks.TaskResourceRequirementsResourceName.HasValue||ProcessingTasks.TaskResourceRequirementsResourceListName.HasValue)==False)&amp;&amp;(Math.If(ProcessingTaskMaterialsReferencedTableName.HasValue, ProcessingTaskMaterialsReferencedTableName.AvailableRowCount&gt;0, (ProcessingTasks.TaskMaterialRequirementsActionType==Enum.MaterialActionType.Consume)&amp;&amp;ProcessingTasks.TaskMaterialRequirementsMaterialName.HasValue)==False))</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Assign" Name="TaskReadyAssignments" ID="3">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>ProcessingTaskStateAssignmentsReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingTasks.TaskStateAssignmentsStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">ProcessingTasks.TaskStateAssignmentsNewValue</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">ProcessingTasks.TaskStateAssignmentsTrigger!=List.TaskStateAssignmentTrigger.TaskReady</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Execute" Name="TaskReadyAddOnProcess" ID="4">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ProcessingTasks.TaskReadyAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Seize" Name="TaskResources" ID="5">
+        <Properties>
+          <Property Name="ResourceSeizes">
+            <Value>ProcessingTaskResourcesReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ProcessingTasks.TaskResourceRequirementsResourceType</Property>
+                <Property Name="ResourceName">ProcessingTasks.TaskResourceRequirementsResourceName</Property>
+                <Property Name="ResourceListName">ProcessingTasks.TaskResourceRequirementsResourceListName</Property>
+                <Property Name="NumberOfResources">ProcessingTasks.TaskResourceRequirementsNumberOfResources</Property>
+                <Property Name="UnitsPerResource">ProcessingTasks.TaskResourceRequirementsUnitsPerResource</Property>
+                <Property Name="SelectionGoal">ProcessingTasks.TaskResourceRequirementsSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">ProcessingTasks.TaskResourceRequirementsSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">ProcessingTasks.TaskResourceRequirementsSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">ProcessingTasks.TaskResourceRequirementsResourceEfficiency</Property>
+                <Property Name="RequestMove">ProcessingTasks.TaskResourceRequirementsRequestMove</Property>
+                <Property Name="DestinationNode">ProcessingTasks.TaskResourceRequirementsDestinationNode</Property>
+                <Property Name="OnSeizedProcess">
+                  <Value>ProcessingTasks.SeizedResourceAddOnProcess</Value>
+                </Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">Math.If(ProcessingTasks.TaskResourceRequirementsSkipRequirementCondition, True, ProcessingTasks.TaskProcessType==Enum.TaskProcessType.SequenceDependentSetup, ProcessingTaskToken.ExpectedSetupTime==0.0, False)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">ProcessingTasks.TaskResourceRequirementsMustSimultaneouslySeize</Property>
+          <Property Name="ImmediatelyTrySeize">ProcessingTasks.TaskResourceRequirementsImmediatelyTrySeize</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Consume" Name="TaskMaterials" ID="6">
+        <Properties>
+          <Property Name="Materials">
+            <Value>ProcessingTaskMaterialsReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="MaterialsConsumptionType">ProcessingTasks.TaskMaterialRequirementsConsumptionOrProductionType</Property>
+                <Property Name="MaterialsMaterialName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsMaterialName</Value>
+                </Property>
+                <Property Name="MaterialsInventorySiteType">ProcessingTasks.TaskMaterialRequirementsInventorySiteType</Property>
+                <Property Name="MaterialsSiteObjectName">ProcessingTasks.TaskMaterialRequirementsSiteObjectName</Property>
+                <Property Name="MaterialsBOMName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsBOMName</Value>
+                </Property>
+                <Property Name="MaterialsBOMGroupName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsBOMGroupName</Value>
+                </Property>
+                <Property Name="MaterialsQuantity">ProcessingTasks.TaskMaterialRequirementsQuantity</Property>
+                <Property Name="MaterialsLotID">ProcessingTasks.TaskMaterialRequirementsLotID</Property>
+                <Property Name="MaterialsOnConsumedProcess">
+                  <Value>ProcessingTasks.ConsumedMaterialAddOnProcess</Value>
+                </Property>
+                <Property Name="MaterialsSkipConsumptionCondition">Math.If(ProcessingTasks.TaskMaterialRequirementsActionType==Enum.MaterialActionType.Produce, True, ProcessingTasks.TaskMaterialRequirementsSkipRequirementCondition, True,ProcessingTasks.TaskProcessType==Enum.TaskProcessType.SequenceDependentSetup, ProcessingTaskToken.ExpectedSetupTime==0.0, False)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslyConsume">ProcessingTasks.TaskMaterialRequirementsMustSimultaneouslyConsume</Property>
+          <Property Name="ImmediatelyTryConsume">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Assign" Name="StartingTaskAssignments" ID="7">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>ProcessingTaskStateAssignmentsReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingTasks.TaskStateAssignmentsStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">ProcessingTasks.TaskStateAssignmentsNewValue</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">ProcessingTasks.TaskStateAssignmentsTrigger!=List.TaskStateAssignmentTrigger.StartingTask</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="8" />
+      </Step>
+      <Step Type="Execute" Name="StartingTaskAddOnProcess" ID="8">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ProcessingTasks.StartingTaskAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="9" />
+      </Step>
+      <Step Type="Decide" Name="IfProcessTypeSpecificTime" ID="9">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ProcessingTasks.TaskProcessType==Enum.TaskProcessType.SpecificTime</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="21" />
+        <Exit Name="False" Type="Alternate" NextID="10" />
+      </Step>
+      <Step Type="Decide" Name="IfProcessTypeProcessName" ID="10">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ProcessingTasks.TaskProcessType==Enum.TaskProcessType.ProcessName</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="20" />
+        <Exit Name="False" Type="Alternate" NextID="11" />
+      </Step>
+      <Step Type="Decide" Name="IfProcessTypeSequenceDependentSetup" ID="11">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ProcessingTasks.TaskProcessType==Enum.TaskProcessType.SequenceDependentSetup</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="19" />
+        <Exit Name="False" Type="Alternate" NextID="12" />
+      </Step>
+      <Step Type="Assign" Name="SubmodelEntityType" ID="12">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ProcessingTaskToken.SubmodelEntityType</Value>
+          </Property>
+          <Property Name="NewValue">Math.If(ProcessingTasks.TaskSubmodelEntityType.HasValue, ProcessingTasks.TaskSubmodelEntityType, Entity.EntityType)</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="13" />
+      </Step>
+      <Step Type="Create" Name="SubmodelEntity" ID="13">
+        <Properties>
+          <Property Name="CreateType">ProcessingTasks.TaskSubmodelEntityCreationMethod</Property>
+          <Property Name="EntityType">ProcessingTaskToken.SubmodelEntityType</Property>
+          <Property Name="SaveCreatedEntityReference">
+            <Value>ProcessingTaskToken.SubmodelEntity</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Original" Type="Primary" NextID="17" />
+        <Exit Name="Created" Type="Alternate" NextID="14" />
+      </Step>
+      <Step Type="Assign" Name="OriginalEntityReference" ID="14">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>ProcessingTasks.TaskSaveOriginalEntityReference</Value>
+          </Property>
+          <Property Name="NewValue">ProcessingTaskToken.TaskInfo.AssociatedObject</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="15" />
+      </Step>
+      <Step Type="SetNode" Name="SubmodelStartingNode" ID="15">
+        <Properties>
+          <Property Name="NodeName">ProcessingTasks.TaskSubmodelStartingNode</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="16" />
+      </Step>
+      <Step Type="Transfer" Name="ToSubmodelStartingNode" ID="16">
+        <Properties>
+          <Property Name="NodeName">ProcessingTasks.TaskSubmodelStartingNode</Property>
+        </Properties>
+      </Step>
+      <Step Type="Decide" Name="IfActiveSubmodelEntity" ID="17">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">ProcessingTaskToken.SubmodelEntity!=Nothing</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="18" />
+        <Exit Name="False" Type="Alternate" NextID="22" />
+      </Step>
+      <Step Type="Wait" Name="UntilSubmodelEntityDestroyed" ID="18">
+        <Properties>
+          <Property Name="EventName">ProcessingTaskToken.SubmodelEntity.Destroyed</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="22" />
+      </Step>
+      <Step Type="Changeover" Name="SetupTime" ID="19">
+        <Properties>
+          <Property Name="ResourceName">ParentObject</Property>
+          <Property Name="ChangeoverLogicName">
+            <Value>ProcessingTasks.TaskChangeoverLogicName</Value>
+          </Property>
+          <Property Name="DelayMultiplier">Math.If(Math.IsNaN(Token.Task.SeizedResources.AggregateEfficiency(ProcessingTasks.TaskResourceEfficiencyRule)), 1.0, Token.Task.SeizedResources.AggregateEfficiency(ProcessingTasks.TaskResourceEfficiencyRule) ^ -1)</Property>
+          <Property Name="SaveSetupTime">
+            <Value>ProcessingTaskToken.IncurredSetupTime</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="22" />
+      </Step>
+      <Step Type="Execute" Name="ProcessName" ID="20">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ProcessingTasks.TaskProcessName</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="22" />
+      </Step>
+      <Step Type="Delay" Name="ProcessingTime" ID="21">
+        <Properties>
+          <Property Name="DelayTime">ProcessingTasks.TaskProcessingTime</Property>
+          <Property Name="DelayMultiplier">Math.If(Math.IsNaN(Token.Task.SeizedResources.AggregateEfficiency(ProcessingTasks.TaskResourceEfficiencyRule)), 1.0, Token.Task.SeizedResources.AggregateEfficiency(ProcessingTasks.TaskResourceEfficiencyRule) ^ -1)</Property>
+          <Property Name="Interruptible">True</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="22" />
+      </Step>
+      <Step Type="Assign" Name="FinishedTaskAssignments" ID="22">
+        <Properties>
+          <Property Name="Assignments">
+            <Value>ProcessingTaskStateAssignmentsReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ProcessingTasks.TaskStateAssignmentsStateVariableName</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">ProcessingTasks.TaskStateAssignmentsNewValue</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">ProcessingTasks.TaskStateAssignmentsTrigger!=List.TaskStateAssignmentTrigger.FinishedTask</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="23" />
+      </Step>
+      <Step Type="Execute" Name="FinishedTaskAddOnProcess" ID="23">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ProcessingTasks.FinishedTaskAddOnProcess</Value>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="24" />
+      </Step>
+      <Step Type="Produce" Name="TaskMaterials" ID="24">
+        <Properties>
+          <Property Name="Materials">
+            <Value>ProcessingTaskMaterialsReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="MaterialsProductionType">ProcessingTasks.TaskMaterialRequirementsConsumptionOrProductionType</Property>
+                <Property Name="MaterialsMaterialName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsMaterialName</Value>
+                </Property>
+                <Property Name="MaterialsInventorySiteType">ProcessingTasks.TaskMaterialRequirementsInventorySiteType</Property>
+                <Property Name="MaterialsSiteObjectName">ProcessingTasks.TaskMaterialRequirementsSiteObjectName</Property>
+                <Property Name="MaterialsBOMName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsBOMName</Value>
+                </Property>
+                <Property Name="MaterialsBOMGroupName">
+                  <Value>ProcessingTasks.TaskMaterialRequirementsBOMGroupName</Value>
+                </Property>
+                <Property Name="MaterialsQuantity">ProcessingTasks.TaskMaterialRequirementsQuantity</Property>
+                <Property Name="MaterialsLotID">ProcessingTasks.TaskMaterialRequirementsLotID</Property>
+                <Property Name="MaterialsProductionDelayTime">ProcessingTasks.TaskMaterialRequirementsProductionDelayTime</Property>
+                <Property Name="MaterialsOnProducedProcess">
+                  <Value>ProcessingTasks.ProducedMaterialAddOnProcess</Value>
+                </Property>
+                <Property Name="MaterialsSkipProductionCondition">Math.If(ProcessingTasks.TaskMaterialRequirementsActionType==Enum.MaterialActionType.Consume, True, ProcessingTasks.TaskMaterialRequirementsSkipRequirementCondition, True,ProcessingTasks.TaskProcessType==Enum.TaskProcessType.SequenceDependentSetup, ProcessingTaskToken.IncurredSetupTime==0.0, False)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTryAllocate">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="25" />
+      </Step>
+      <Step Type="Release" Name="TaskResources" ID="25">
+        <Properties>
+          <Property Name="ResourceReleases">
+            <Value>ProcessingTaskResourcesReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ProcessingTasks.TaskResourceRequirementsResourceType</Property>
+                <Property Name="ResourceName">ProcessingTasks.TaskResourceRequirementsResourceName</Property>
+                <Property Name="ResourceListName">ProcessingTasks.TaskResourceRequirementsResourceListName</Property>
+                <Property Name="QuantityType">All</Property>
+                <Property Name="KeepReservedCondition">ProcessingTasks.TaskResourceRequirementsKeepReservedCondition</Property>
+                <Property Name="ReservationTimeout">ProcessingTasks.TaskResourceRequirementsReservationTimeout</Property>
+                <Property Name="OnReleasedProcess">
+                  <Value>ProcessingTasks.ReleasedResourceAddOnProcess</Value>
+                </Property>
+                <Property Name="SkipReleaseCondition">ProcessingTasks.TaskResourceRequirementsSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="SeizedResourcesFilterType">Token</Property>
+          <Property Name="SeizedResourcesFilterToken">Token</Property>
+          <Property Name="UseStrictListReferencing">True</Property>
+          <Property Name="ImmediatelyTryAllocate">ProcessingTasks.TaskResourceRequirementsImmediatelyTryAllocateWhenReleased</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="26" />
+      </Step>
+      <Step Type="Assign" Name="ResourceState" ID="26">
+        <Properties>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>ResourceState</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Math.If(Capacity==0, List.ResourceStateName.OffShiftProcessing, List.ResourceStateName.Processing)</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">ProcessingTasks.TaskProcessType!=Enum.TaskProcessType.SequenceDependentSetup || HasActiveChangeover</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- yF8iN7V52PYyYQwWzxUvwQc1dSUpWxx8CtglTDz/J/T2RPK19hNj0v32r7z4P0XgPtekVuFGoqzBeC8CdIFiew== -->

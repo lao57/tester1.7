@@ -1,0 +1,39 @@
+<Fragment>
+  <Process Name="OnExitedProcessing" BeginStepID="2">
+    <Properties>
+      <Property Name="TriggeringEventName">Processing.Exited</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Decide" Name="IfTokenAssociatedObject" ExclusionExpression="Math.If(OutputBufferCapacity&gt;0, 2, 0)" ID="2">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">Token.AssociatedObject != Nothing</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="3" />
+        <Exit Name="False" Type="Alternate" NextID="4" />
+      </Step>
+      <Step Type="Release" Name="Server" ExclusionExpression="OutputBufferCapacity&gt;0" ID="3">
+        <Properties>
+          <Property Name="ResourceReleases">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ParentObject</Property>
+                <Property Name="QuantityType">All</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="ImmediatelyTryAllocate">ImmediatelyTryAllocateWhenReleased</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="4" />
+      </Step>
+      <Step Type="Execute" Name="ExitedAddOnProcess" ExclusionExpression="OutputBufferCapacity&gt;0" ID="4">
+        <Properties>
+          <Property Name="ProcessName">
+            <Value>ExitedAddOnProcess</Value>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- /DOFE38Y9EkSZbbfyZJJX24FN/gG9t6eEUsTlYbve+4eEOIMD3J9RwRZVMyJ2zAuxz6aS14XAcFh1IZDxalu4Q== -->

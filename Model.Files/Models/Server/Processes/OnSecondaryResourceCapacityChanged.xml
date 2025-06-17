@@ -1,0 +1,342 @@
+<Fragment>
+  <Process Name="OnSecondaryResourceCapacityChanged" BeginStepID="2">
+    <Properties>
+      <Property Name="TokenClassName">OffShiftRuleToken</Property>
+    </Properties>
+    <Steps>
+      <Step Type="Assign" Name="TokenStates" ID="2">
+        <Properties>
+          <Property Name="StateVariableName">
+            <Value>OffShiftRuleToken.Resource</Value>
+          </Property>
+          <Property Name="NewValue">Token.AssociatedObject</Property>
+          <Property Name="Assignments">
+            <Rows>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OffShiftRuleToken.Entity</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Token.ContextObject</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OffShiftRuleToken.DestinationNode</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">OffShiftRuleToken.Entity.SeizedResources.DestinationNodeFor(OffShiftRuleToken.Resource)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OffShiftRuleToken.SwitchResources</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Math.If(Token.Task!=Nothing, ProcessingTasks.TaskResourceRequirementsOffShiftRule==List.OffShiftRuleName.SwitchResourcesIfPossible, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.SwitchResourcesIfPossible)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OffShiftRuleToken.LastSeizeResourcesToken</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Math.If(OnSecondaryResourceCapacityChanged.TokensInProcess.NumberItems&gt;1,OnSecondaryResourceCapacityChanged.TokensInProcess.LastItemFor(OffShiftRuleToken.Entity,Token.Task,OnSecondaryResourceCapacityChanged.TokensInProcess.NumberItems-1),Nothing)</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">OffShiftRuleToken.SwitchResources==False</Property>
+              </Properties>
+              <Properties>
+                <Property Name="AssignmentsStateVariableName">
+                  <Value>OffShiftRuleToken.SeizeResources</Value>
+                </Property>
+                <Property Name="AssignmentsNewValue">Math.If(OffShiftRuleToken.LastSeizeResourcesToken==Nothing,True,TimeNow&gt;OffShiftRuleToken.LastSeizeResourcesToken.Token.TimeCreated)</Property>
+                <Property Name="AssignmentsSkipAssignmentCondition">OffShiftRuleToken.SwitchResources==False</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="3" />
+      </Step>
+      <Step Type="Decide" Name="IfOnShift" ID="3">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">(OffShiftRuleToken.Resource.Capacity.Previous==0)&amp;&amp;(OffShiftRuleToken.Resource.Capacity&gt;0)</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="16" />
+        <Exit Name="False" Type="Alternate" NextID="4" />
+      </Step>
+      <Step Type="Decide" Name="IfOffShift" ID="4">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">(OffShiftRuleToken.Resource.Capacity.Previous&gt;0)&amp;&amp;(OffShiftRuleToken.Resource.Capacity==0)</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="5" />
+      </Step>
+      <Step Type="Suspend" Name="Processing" ID="5">
+        <Properties>
+          <Property Name="SuspendActions">
+            <Rows>
+              <Properties>
+                <Property Name="SuspendActionsProcessName">
+                  <Value>OnEnteredInputBuffer</Value>
+                </Property>
+                <Property Name="SuspendActionsTokenMatchCondition">Candidate.Entity==OffShiftRuleToken.Entity</Property>
+                <Property Name="SuspendActionsObjectType"></Property>
+                <Property Name="SuspendActionsSkipSuspendCondition">Math.If(Token.Task!=Nothing, True, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="SuspendActionsProcessName">
+                  <Value>OnEnteredProcessing</Value>
+                </Property>
+                <Property Name="SuspendActionsTokenMatchCondition">Candidate.Entity==OffShiftRuleToken.Entity</Property>
+                <Property Name="SuspendActionsObjectType"></Property>
+                <Property Name="SuspendActionsSkipSuspendCondition">Math.If(Token.Task!=Nothing, True, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="SuspendActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+                <Property Name="SuspendActionsTokenMatchCondition">Math.If(Token.Task!=Nothing, Candidate.Token.Task==Token.Task, Candidate.Entity==OffShiftRuleToken.Entity)</Property>
+                <Property Name="SuspendActionsObjectType"></Property>
+                <Property Name="SuspendActionsSkipSuspendCondition">Math.If(Token.Task!=Nothing, ProcessingTasks.TaskResourceRequirementsOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="6" />
+      </Step>
+      <Step Type="Decide" Name="IfSwitchResources" ID="6">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">OffShiftRuleToken.SwitchResources</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="7" />
+      </Step>
+      <Step Type="Create" Name="EntityToken" ID="7">
+        <Properties>
+          <Property Name="CreateType">NewToken</Property>
+          <Property Name="TokenAssociatedObject">OffShiftRuleToken.Entity</Property>
+          <Property Name="TokenContextObject">ParentObject</Property>
+        </Properties>
+        <Exit Name="Created" Type="Alternate" NextID="8" />
+      </Step>
+      <Step Type="Decide" Name="IfTaskResource" ID="8">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">Token.Task!=Nothing</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="13" />
+        <Exit Name="False" Type="Alternate" NextID="9" />
+      </Step>
+      <Step Type="Release" Name="Resource" ID="9">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceReleases">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceName">OffShiftRuleToken.Resource</Property>
+                <Property Name="QuantityType">All</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="SeizedResourcesFilterType">Task</Property>
+          <Property Name="SeizedResourcesFilterTask">Nothing</Property>
+          <Property Name="ImmediatelyTryAllocate">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="10" />
+      </Step>
+      <Step Type="Decide" Name="IfSeizeResources" ID="10">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">OffShiftRuleToken.SeizeResources</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="11" />
+        <Exit Name="False" Type="Alternate" NextID="17" />
+      </Step>
+      <Step Type="Seize" Name="Resources" ExclusionExpression="SecondaryResourcesForProcessingIsRepeatGroup==True" ID="11">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceSeizes">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourceForProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourceForProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourceForProcessingResourceListName</Property>
+                <Property Name="QuantityType">Deficient</Property>
+                <Property Name="NumberOfResources">SecondaryResourceForProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourceForProcessingUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourceForProcessingSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourceForProcessingSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourceForProcessingSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourceForProcessingResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourceForProcessingRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourceForProcessingDestinationNode</Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourceForProcessingSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourcesForProcessingMustSimultaneouslySeize</Property>
+          <Property Name="SeizedResourcesFilterType">Task</Property>
+          <Property Name="SeizedResourcesFilterTask">Nothing</Property>
+          <Property Name="UseStrictListReferencing">True</Property>
+          <Property Name="ImmediatelyTrySeize">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="12" />
+      </Step>
+      <Step Type="Seize" Name="Resources" ExclusionExpression="SecondaryResourcesForProcessingIsRepeatGroup==False" ID="12">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceSeizes">
+            <Value>SecondaryResourcesForProcessing</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">SecondaryResourcesForProcessingResourceType</Property>
+                <Property Name="ResourceName">SecondaryResourcesForProcessingResourceName</Property>
+                <Property Name="ResourceListName">SecondaryResourcesForProcessingResourceListName</Property>
+                <Property Name="QuantityType">Deficient</Property>
+                <Property Name="NumberOfResources">SecondaryResourcesForProcessingNumberOfResources</Property>
+                <Property Name="UnitsPerResource">SecondaryResourcesForProcessingUnitsPerResource</Property>
+                <Property Name="SelectionGoal">SecondaryResourcesForProcessingSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">SecondaryResourcesForProcessingSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">SecondaryResourcesForProcessingSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">SecondaryResourcesForProcessingResourceEfficiency</Property>
+                <Property Name="RequestMove">SecondaryResourcesForProcessingRequestMove</Property>
+                <Property Name="DestinationNode">SecondaryResourcesForProcessingDestinationNode</Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">SecondaryResourcesForProcessing.SecondaryResourcesForProcessingSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">SecondaryResourcesForProcessingMustSimultaneouslySeize</Property>
+          <Property Name="SeizedResourcesFilterType">Task</Property>
+          <Property Name="SeizedResourcesFilterTask">Nothing</Property>
+          <Property Name="UseStrictListReferencing">True</Property>
+          <Property Name="ImmediatelyTrySeize">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="17" />
+      </Step>
+      <Step Type="Release" Name="Resource" ID="13">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceReleases">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceName">OffShiftRuleToken.Resource</Property>
+                <Property Name="QuantityType">All</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="SeizedResourcesFilterType">Token</Property>
+          <Property Name="SeizedResourcesFilterToken">Token.Task.PrimaryToken</Property>
+          <Property Name="ImmediatelyTryAllocate">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="14" />
+      </Step>
+      <Step Type="Decide" Name="IfSeizeResources" ID="14">
+        <Properties>
+          <Property Name="DecideType">ConditionBased</Property>
+          <Property Name="ConditionOrProbability">OffShiftRuleToken.SeizeResources</Property>
+        </Properties>
+        <Exit Name="True" Type="Primary" NextID="15" />
+        <Exit Name="False" Type="Alternate" NextID="17" />
+      </Step>
+      <Step Type="Seize" Name="Resources" ID="15">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceSeizes">
+            <Value>ProcessingTaskResourcesReferencedTableName</Value>
+            <Rows>
+              <Properties>
+                <Property Name="ResourceType">ProcessingTasks.TaskResourceRequirementsResourceType</Property>
+                <Property Name="ResourceName">ProcessingTasks.TaskResourceRequirementsResourceName</Property>
+                <Property Name="ResourceListName">ProcessingTasks.TaskResourceRequirementsResourceListName</Property>
+                <Property Name="QuantityType">Deficient</Property>
+                <Property Name="NumberOfResources">ProcessingTasks.TaskResourceRequirementsNumberOfResources</Property>
+                <Property Name="UnitsPerResource">ProcessingTasks.TaskResourceRequirementsUnitsPerResource</Property>
+                <Property Name="SelectionGoal">ProcessingTasks.TaskResourceRequirementsSelectionGoal</Property>
+                <Property Name="SelectionValueExpression">ProcessingTasks.TaskResourceRequirementsSelectionValueExpression</Property>
+                <Property Name="SelectionCondition">ProcessingTasks.TaskResourceRequirementsSelectionCondition</Property>
+                <Property Name="ResourceEfficiency">ProcessingTasks.TaskResourceRequirementsResourceEfficiency</Property>
+                <Property Name="RequestMove">ProcessingTasks.TaskResourceRequirementsRequestMove</Property>
+                <Property Name="DestinationNode">ProcessingTasks.TaskResourceRequirementsDestinationNode</Property>
+                <Property Name="OnCapacityChangedProcess">
+                  <Value>OnSecondaryResourceCapacityChanged</Value>
+                </Property>
+                <Property Name="SkipSeizeCondition">ProcessingTasks.TaskResourceRequirementsSkipRequirementCondition</Property>
+              </Properties>
+            </Rows>
+          </Property>
+          <Property Name="MustSimultaneouslySeize">ProcessingTasks.TaskResourceRequirementsMustSimultaneouslySeize</Property>
+          <Property Name="SeizedResourcesFilterType">Token</Property>
+          <Property Name="SeizedResourcesFilterToken">Token.Task.PrimaryToken</Property>
+          <Property Name="UseStrictListReferencing">True</Property>
+          <Property Name="ImmediatelyTrySeize">False</Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="17" />
+      </Step>
+      <Step Type="Move" Name="Resource" ID="16">
+        <Properties>
+          <Property Name="OwnerType">SpecificObject</Property>
+          <Property Name="OwnerObject">
+            <Value>OffShiftRuleToken.Entity</Value>
+          </Property>
+          <Property Name="ResourceMoveRequests">
+            <Rows>
+              <Properties>
+                <Property Name="ResourceName">OffShiftRuleToken.Resource</Property>
+                <Property Name="DestinationNode">OffShiftRuleToken.DestinationNode</Property>
+                <Property Name="SkipMoveCondition">Math.If(OffShiftRuleToken.Resource.Is.Entity, (OffShiftRuleToken.DestinationNode==Nothing)||(OffShiftRuleToken.Resource.Entity.CurrentNode==OffShiftRuleToken.DestinationNode), True)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+        <Exit Name="Exit" Type="Primary" NextID="17" />
+      </Step>
+      <Step Type="Resume" Name="Processing" ID="17">
+        <Properties>
+          <Property Name="ResumeActions">
+            <Rows>
+              <Properties>
+                <Property Name="ResumeActionsProcessName">
+                  <Value>OnEnteredInputBuffer</Value>
+                </Property>
+                <Property Name="ResumeActionsTokenMatchCondition">Candidate.Entity==OffShiftRuleToken.Entity</Property>
+                <Property Name="ResumeActionsObjectType"></Property>
+                <Property Name="ResumeActionsSkipResumeCondition">Math.If(Token.Task!=Nothing, True, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="ResumeActionsProcessName">
+                  <Value>OnEnteredProcessing</Value>
+                </Property>
+                <Property Name="ResumeActionsTokenMatchCondition">Candidate.Entity==OffShiftRuleToken.Entity</Property>
+                <Property Name="ResumeActionsObjectType"></Property>
+                <Property Name="ResumeActionsSkipResumeCondition">Math.If(Token.Task!=Nothing, True, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+              <Properties>
+                <Property Name="ResumeActionsProcessName">
+                  <Value>PerformProcessingTask</Value>
+                </Property>
+                <Property Name="ResumeActionsTokenMatchCondition">Math.If(Token.Task!=Nothing, Candidate.Token.Task==Token.Task, Candidate.Entity==OffShiftRuleToken.Entity)</Property>
+                <Property Name="ResumeActionsObjectType"></Property>
+                <Property Name="ResumeActionsSkipResumeCondition">Math.If(Token.Task!=Nothing, ProcessingTasks.TaskResourceRequirementsOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted, SecondaryResourcesForProcessingOffShiftRule==List.OffShiftRuleName.FinishWorkAlreadyStarted)</Property>
+              </Properties>
+            </Rows>
+          </Property>
+        </Properties>
+      </Step>
+    </Steps>
+  </Process>
+</Fragment>
+<!-- LsN2E7v5O64tUmW+Q50Mw8ynJOElbWVdG+y+dHQ3gBEBqqKm6iRLsjKL1OSmzOkflY0v4E6kSA0PKqfR59bO6w== -->
