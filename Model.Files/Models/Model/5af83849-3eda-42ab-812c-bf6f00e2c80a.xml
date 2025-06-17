@@ -133,9 +133,9 @@
         </AttachedObjects>
       </Graphics>
     </Fixed>
-    <Fixed Name="Server1" Type="Server" Location="3.25 0 1" YawDeg="90" Size="2.0892081459734437 0.9991037027645706 1.000000367302002" Scope="Public">
+    <Fixed Name="Server1" Type="Server" Location="3 0 -1" YawDeg="90" Size="2.0892081459734437 0.9991037027645706 1.000000367302002" Scope="Public">
       <AssociatedNodes>
-        <Node Name="Input@Server1" Type="BasicNode" Location="1.75 0 1" YawDeg="90" Scope="Public">
+        <Node Name="Input@Server1" Type="BasicNode" Location="1.5 0 -1" YawDeg="90" Scope="Public">
           <Properties>
             <Property Name="InitialCost" Units="USD">0.0</Property>
             <Property Name="InitialCostRate" Units="USD per Hour">0.0</Property>
@@ -149,7 +149,7 @@
           </Properties>
           <Graphics ExternallyVisible="True" />
         </Node>
-        <Node Name="Output@Server1" Type="TransferNode" Location="4.75 0 1" YawDeg="90" Scope="Public">
+        <Node Name="Output@Server1" Type="TransferNode" Location="4.5 0 -1" YawDeg="90" Scope="Public">
           <Properties>
             <Property Name="InitialCost" Units="USD">0.0</Property>
             <Property Name="InitialCostRate" Units="USD per Hour">0.0</Property>
@@ -265,20 +265,20 @@
         <AttachedObjects IndexList="1 2 3">
           <Queue Queue="InputBuffer.Contents" ExternallyVisible="True">
             <Points>
-              <Point Location="2.25 0 1.5" />
-              <Point Location="-0.75 0 1.5" />
+              <Point Location="2 0 -0.5" />
+              <Point Location="-1 0 -0.5" />
             </Points>
           </Queue>
           <Queue Queue="OutputBuffer.Contents" ExternallyVisible="True">
             <Points>
-              <Point Location="4.25 0 1.5" />
-              <Point Location="7.25 0 1.5" />
+              <Point Location="4 0 -0.5" />
+              <Point Location="7 0 -0.5" />
             </Points>
           </Queue>
           <Queue Queue="Processing.Contents" ExternallyVisible="True">
             <Points>
-              <Point Location="2.25 0 0" />
-              <Point Location="4.25 0 0" />
+              <Point Location="2 0 -2" />
+              <Point Location="4 0 -2" />
             </Points>
           </Queue>
         </AttachedObjects>
@@ -354,10 +354,10 @@
     </DayPattern>
   </DayPatterns>
   <SaveHistories>
-    <SaveHistory SavedDateTime="2025-06-17T19:14:17" ProductVersion="18.276.45400.0" Edition="RPS" />
+    <SaveHistory SavedDateTime="2025-06-17T19:15:09" ProductVersion="18.276.45400.0" Edition="RPS" />
   </SaveHistories>
   <Graphics>
     <AnimationSetup MinimumNumberOfFramesToDisplayIdleAnimation="10" />
   </Graphics>
 </Fragment>
-<!-- 5J6pm74fsZLpY/il+Dl4y79txZSCox90P/MX/MWaPNf8f9EovtKJsCvHe0j0qVp+JXfZ/K8dSuY0MoExaRDKqA== -->
+<!-- tr76AYWo99azAbLTZBNARm+WIe3HOmd4sKw8DT4QHjAIGt5OAwmhYxN5hz9RO9Njx+0k6NMqKpjB59NriP8K0A== -->
